@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './components/registro/registro.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/registro', pathMatch: 'full' },
   { path: 'registro', component: RegisterComponent }
 ];
 
