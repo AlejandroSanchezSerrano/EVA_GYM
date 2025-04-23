@@ -19,7 +19,8 @@ export class RegisterComponent {
     gender: '',
     activity_level: '',
     goal: '',
-    daily_calories: 0
+    daily_calories: 0,
+    passwd: ''
   };
 
   constructor(private userService: UserService, private router: Router  ) { }
