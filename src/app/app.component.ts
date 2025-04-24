@@ -7,8 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'EVA_GYM';
+  title = 'EVA GYM';
   correo = 'alexxsanse@gmail.com';
-  usuarioLogueado = false;
-  nombreUsuario = 'AlexxSanse';
 }
