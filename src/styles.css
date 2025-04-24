@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: 'font';
+    src: url(../public/font.otf);
+}
+
+body h1 {
+    font-family: font;
+}
+
+main {
+    background: url('https://c4.wallpaperflare.com/wallpaper/874/132/51/evangelion-neon-genesis-evangelion-evangelion-unit-01-wallpaper-preview.jpg') no-repeat center center fixed;
+    background-size: cover;
+}

@@ -21,4 +21,8 @@ export class UserService {
     console.log("Enviando usuario:", user);
     return this.http.post(`${this.apiUrl}/create.php`, user, httpOptions);
   }
+
+  login(credentials: { name: string; passwd: string }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/login.php`, credentials);
+  }
 }

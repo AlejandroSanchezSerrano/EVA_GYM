@@ -1,6 +1,6 @@
 <header class="bg-white sticky-lg-top w-100">
-  <div class="d-flex w-100 justify-content-between align-content-center">
-    <h1>EVA GYM</h1>
+  <div class="d-flex w-100 justify-content-center align-content-center">
+    <h1 class="titulazo">EVA GYM</h1>
     <!-- <img style="height: 100px; float:right;" src="https://res.cloudinary.com/drikoem6d/image/upload/v1743762097/Dise%C3%B1o_sin_t%C3%ADtulo_bqbdk4.png" alt="EVA01"> -->
   </div>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -8,7 +8,7 @@
         <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" [routerLinkActive]="['active']" routerLink="/registro">Inicio</a>
+                    <a class="nav-link" [routerLinkActive]="['active']" routerLink="/inicio">Inicio</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" [routerLinkActive]="['active']" routerLink="/peso">Mis Pesos</a>
@@ -31,11 +31,11 @@
 </nav>
 </header>
 
-<main class="py-0">
+<main>
   <router-outlet></router-outlet>
 </main>
 
-<footer class="bg-dark text-white py-4 mt-auto">
+<footer class="bg-dark text-white p-3">
   <div class="container text-start">
     <div class="row">
       <div class="col-md-4 mb-3">
