@@ -55,7 +55,7 @@ export class RegisterComponent {
     this.userService.createUser(this.user).subscribe(
       response => {
         console.log('User created successfully:', response);
-        this.router.navigate(['/perfil']); // Redirigir al perfil
+        this.router.navigate(['/login']); // Redirigir al perfil
       },
       error => {
         console.error('Error creating user:', error);
