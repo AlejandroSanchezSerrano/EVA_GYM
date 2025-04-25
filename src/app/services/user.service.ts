@@ -25,4 +25,9 @@ export class UserService {
   login(credentials: { name: string; passwd: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login.php`, credentials);
   }
+
+  getUserById(id: number): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/getUser.php`, { id }, httpOptions);
+  }
+  
 }
