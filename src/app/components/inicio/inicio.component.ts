@@ -10,12 +10,12 @@ import { CommonModule } from '@angular/common';
 })
 export class InicioComponent implements OnInit {
   isUserLoggedIn: boolean = false;
-  userName: string | null = null;
+  user_name: string | null = null;
 
   constructor(private storageService: StorageService) {}
 
   ngOnInit(): void {
-    this.userName = this.storageService.getUserName();
-    this.isUserLoggedIn = this.userName !== null; 
+    this.user_name = this.storageService.getUserName();
+    this.isUserLoggedIn = this.user_name !== null; 
   }
 }

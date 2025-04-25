@@ -26,6 +26,7 @@ export class LoginComponent {
         console.log('Login successful:', response);
         // Guardar el token o ID del usuario en localStorage o sessionStorage
         localStorage.setItem('user_id', response.user_id);
+        localStorage.setItem('user_name', response.name );
         // Redirigir al usuario a la página de perfil u otra página protegida
         this.router.navigate(['/perfil']);
       },
@@ -34,5 +35,9 @@ export class LoginComponent {
         this.errorMessage = 'Usuario o contraseña incorrectos. Inténtalo nuevamente.';
       }
     );
+  }
+
+  irARegistro() {
+    this.router.navigate(['/registro']);
   }
 }

@@ -1,7 +1,8 @@
 <div class="container">
+  <div class="especial"></div>
   <!-- Hero Section -->
-  <div *ngIf="isUserLoggedIn" class="text-center bg-dark bg-opacity-50 text-white rounded">
-    <h1 class="display-4">Bienvenido {{ userName }}</h1>
+  <div *ngIf="isUserLoggedIn" class="hero text-center bg-dark bg-opacity-50 text-white rounded">
+    <h1 class="display-4">Bienvenido {{ user_name }}</h1>
     <p class="lead">Tu compañero para llevar el control de peso, calorías y ejercicios realizados.</p>
     <button class="btn btn-light">Empieza ahora</button>
   </div>

@@ -9,4 +9,9 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'EVA GYM';
   correo = 'alexxsanse@gmail.com';
+
+  getPerfilLink(): string {
+    return localStorage.getItem('user_name') ? '/perfil' : '/login';
+  }
+  
 }

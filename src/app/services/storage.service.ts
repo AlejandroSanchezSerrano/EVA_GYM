@@ -5,15 +5,11 @@ import { Injectable } from '@angular/core';
 })
 export class StorageService {
   getUserName(): string | null {
-    return localStorage.getItem('userName');
-  }
-
-  setUserName(userName: string): void {
-    localStorage.setItem('userName', userName);
+    return localStorage.getItem('user_name');
   }
 
   clearUserData(): void {
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userId');
+    localStorage.removeItem('user_name');
+    localStorage.removeItem('user_id');
   }
 }

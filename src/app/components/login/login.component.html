@@ -1,7 +1,7 @@
 <div class="text-light">
     <div class="container p-3">
-      <div class="form-container">
-        <div class="card shadow p-4 rounded-4 bg-dark text-white">
+      <div class="form-container d-flex justify-content-center">
+        <div class="card shadow p-4 rounded-4 bg-dark text-white w-25">
           <h2 class="text-center mb-4">Iniciar Sesión</h2>
           <form (ngSubmit)="onSubmit()">
             <div class="mb-3">
@@ -33,6 +33,9 @@
               <button type="submit" class="btn btn-primary text-center w-50 mx-auto">Iniciar Sesión</button>
             </div>
           </form>
+          <div class="text-center mt-3">
+            <a (click)="irARegistro()" class="text-primary" style="cursor: pointer;">¿No tienes cuenta? Regístrate aquí</a>
+          </div>          
         </div>
       </div>
     </div>
