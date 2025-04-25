@@ -3,5 +3,29 @@
 }
 
 .hero {
+    border-top-left-radius: 10px 10px;
+    border-top-right-radius: 10px 10px;
     padding: 20px;
+}
+
+.generi img {
+    border-bottom-left-radius: 10px 10px;
+    border-bottom-right-radius: 10px 10px
+}
+
+.btn {
+    background-color: #a877c8;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background-color: #a2da5b;
+}
+
+.btn a {
+    color: #a2da5b;
+}
+
+.btn:hover a {
+    color: #a877c8;
 }

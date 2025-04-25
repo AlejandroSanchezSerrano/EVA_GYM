@@ -1,18 +1,18 @@
-<div class="shadow-lg container rounded">
+<div class="container">
   <div class="especial"></div>
   <!-- Hero Section -->
   <div *ngIf="isUserLoggedIn" class="hero text-center bg-dark bg-opacity-50 text-white">
     <h1 class="display-4">Bienvenido {{ user_name }}</h1>
     <p class="lead">Te damos la bienvenida a EVA GYM, tu lugar idóneo para llevar tu seguimiento fitness.</p>
-    <div class="btn btn-light">
-      <a (click)="irAAcercaDe()" class="text-dark text-decoration-none" style="cursor: pointer;">Sobre Nosotros</a>
+    <div class="btn">
+      <a (click)="irAAcercaDe()" class="text-decoration-none" style="cursor: pointer;">Sobre Nosotros</a>
     </div> 
   </div>
 
   <!-- Carousel Section -->
   <div id="evaGymCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
-      <div class="carousel-item active">
+      <div class="carousel-item active generi">
         <img src="https://res.cloudinary.com/drikoem6d/image/upload/EVA_900_x_300_px_1800_x_600_px_fo088m.png" class="d-block w-100" alt="Progreso">
       </div>
     </div>
