@@ -1,5 +1,8 @@
 .card {
-    max-width: 600px;
-    margin: auto;
-  }
-  
+  max-width: 600px;
+  margin: auto;
+}
+
+.especial {
+  height: 20px;
+}

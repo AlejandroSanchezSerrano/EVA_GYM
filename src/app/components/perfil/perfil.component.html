@@ -1,8 +1,9 @@
-<div class="container mt-5">
+<div class="container">
+  <div class="especial"></div>
     <div *ngIf="user; else loadingOrError">
       <div class="card shadow-sm">
         <div class="card-header bg-primary text-white">
-          <h4 class="mb-0">Perfil de Usuario</h4>
+          <h4>Perfil de Usuario</h4>
         </div>
         <div class="card-body">
           <p><strong>Nombre:</strong> {{ user.name }}</p>
@@ -21,5 +22,6 @@
       <div class="alert alert-info" *ngIf="!errorMessage">Cargando datos del usuario...</div>
       <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
     </ng-template>
-  </div>
+  <div class="especial"></div>
+</div>
   
