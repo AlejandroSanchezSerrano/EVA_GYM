@@ -9,6 +9,9 @@ body h1 {
 }
 
 main {
-    background: url('https://c4.wallpaperflare.com/wallpaper/874/132/51/evangelion-neon-genesis-evangelion-evangelion-unit-01-wallpaper-preview.jpg') no-repeat center center fixed;
+    background: 
+      linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5)),
+      url('https://images8.alphacoders.com/616/616750.jpg') no-repeat center center fixed;
     background-size: cover;
-}
+  }
+  

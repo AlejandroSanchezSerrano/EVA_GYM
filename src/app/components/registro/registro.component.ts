@@ -64,4 +64,7 @@ export class RegisterComponent {
     );
   }
   
+  irALogin() {
+    this.router.navigate(['/login']);
+  }
 }
