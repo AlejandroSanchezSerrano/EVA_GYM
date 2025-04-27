@@ -48,22 +48,30 @@ export class PerfilComponent implements OnInit {
 
   eliminarCuenta() {
     const userIdString = localStorage.getItem('user_id');
+    const userName = localStorage.getItem('user_name');
   
-    if (userIdString !== null) {
-      const userId = Number(userIdString);
+    if (userIdString !== null && userName !== null) {
+      const confirmacion = prompt(`Para confirmar la eliminación, escribe: Eliminar ${userName}`);
   
-      this.userService.deleteUser(userId).subscribe({
-        next: (response) => {
-          console.log('Usuario eliminado:', response);
-          this.router.navigate(['/login']);
-        },
-        error: (error) => {
-          console.error('Error eliminando usuario:', error);
-        }
-      });
+      if (confirmacion === `Eliminar ${userName}`) {
+        const userId = Number(userIdString);
+  
+        this.userService.deleteUser(userId).subscribe({
+          next: (response) => {
+            console.log('Usuario eliminado:', response);
+            this.router.navigate(['/login']);
+          },
+          error: (error) => {
+            console.error('Error eliminando usuario:', error);
+          }
+        });
+      } else {
+        alert('Confirmación incorrecta. No se eliminó el usuario.');
+        console.log('Confirmación incorrecta. No se eliminó el usuario.');
+      }
     } else {
-      console.error('No hay ID de usuario en localStorage.');
+      console.error('No hay ID o nombre de usuario en localStorage.');
     }
-  }
+  }  
   
 }
