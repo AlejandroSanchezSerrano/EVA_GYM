@@ -45,4 +45,25 @@ export class PerfilComponent implements OnInit {
     localStorage.removeItem('user_id');
     window.location.reload();
   }
+
+  eliminarCuenta() {
+    const userIdString = localStorage.getItem('user_id');
+  
+    if (userIdString !== null) {
+      const userId = Number(userIdString);
+  
+      this.userService.deleteUser(userId).subscribe({
+        next: (response) => {
+          console.log('Usuario eliminado:', response);
+          window.location.reload();
+        },
+        error: (error) => {
+          console.error('Error eliminando usuario:', error);
+        }
+      });
+    } else {
+      console.error('No hay ID de usuario en localStorage.');
+    }
+  }
+  
 }

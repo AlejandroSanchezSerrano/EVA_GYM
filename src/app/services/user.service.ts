@@ -13,20 +13,25 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'https://ruizgijon.ddns.net/sancheza/api/evagym'; 
+  private apiUrl = 'https://ruizgijon.ddns.net/sancheza/evagym'; 
 
   constructor(private http: HttpClient) { }
 
   createUser(user: User): Observable<any> {
     console.log("Enviando usuario:", user);
-    return this.http.post(`${this.apiUrl}/create.php`, user, httpOptions);
+    return this.http.post(`${this.apiUrl}/controller/create.php`, user, httpOptions);
   }
 
   login(credentials: { name: string; passwd: string }): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login.php`, credentials);
+    return this.http.post<any>(`${this.apiUrl}/controller/login.php`, credentials);
   }
 
   getUserById(id: number): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/getUser.php`, { id }, httpOptions);
+    return this.http.post<User>(`${this.apiUrl}/controller/getUser.php`, { id }, httpOptions);
   }
+
+  deleteUser(id: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/controller/deleteUser.php`, { id }, httpOptions);
+  }
+  
 }
