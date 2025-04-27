@@ -2,7 +2,7 @@
   <div class="especial"></div>
 
     <div *ngIf="user; else loadingOrError">
-      <h1>Perfil de Usuario</h1>
+      <h1>Perfil de {{ user.name }}</h1>
       <p><strong>Nombre:</strong> {{ user.name }}</p>
       <p><strong>Edad:</strong> {{ user.age }} años</p>
       <p><strong>Peso:</strong> {{ user.weight }} kg</p>
