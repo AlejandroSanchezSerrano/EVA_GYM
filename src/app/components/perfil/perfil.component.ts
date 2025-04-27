@@ -39,4 +39,10 @@ export class PerfilComponent implements OnInit {
       this.router.navigate(['/login']); // Redirige si no hay user_id
     }
   }
+
+  cerrarSesion() {
+    localStorage.removeItem('user_name');
+    localStorage.removeItem('user_id');
+    window.location.reload();
+  }
 }

@@ -29,5 +29,4 @@ export class UserService {
   getUserById(id: number): Observable<User> {
     return this.http.post<User>(`${this.apiUrl}/getUser.php`, { id }, httpOptions);
   }
-  
 }

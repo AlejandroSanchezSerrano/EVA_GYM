@@ -6,3 +6,15 @@
 .especial {
   height: 20px;
 }
+
+* {
+  color: white;
+}
+
+h1 {
+  color: #a877c8;
+}
+
+strong {
+  color: #a2da5b;
+}
