@@ -43,7 +43,7 @@ export class PerfilComponent implements OnInit {
   cerrarSesion() {
     localStorage.removeItem('user_name');
     localStorage.removeItem('user_id');
-    window.location.reload();
+    this.router.navigate(['/login']);
   }
 
   eliminarCuenta() {
@@ -55,7 +55,7 @@ export class PerfilComponent implements OnInit {
       this.userService.deleteUser(userId).subscribe({
         next: (response) => {
           console.log('Usuario eliminado:', response);
-          window.location.reload();
+          this.router.navigate(['/login']);
         },
         error: (error) => {
           console.error('Error eliminando usuario:', error);

@@ -1,27 +1,31 @@
 .titulazo {
-    font-size: 60px;
-    margin: 0;
-    color: white;
+  font-size: 60px;
+  margin: 0;
+  color: white;
 }
 
 header {
-    background-color: black;
+  background-color: black;
 }
 
 a {
-    color: #a2da5b;
+  color: #a2da5b;
 }
 
 a:hover {
-    color: #a877c8;
-    font-weight: bolder;
+  color: #a877c8;
+  font-weight: bolder;
 }
 
 a:active {
-    color: #632d6b;
+  color: #632d6b;
 }
 
-/* a:visited {
-    color: #632d6b;
-} */
+.nav-link.active {
+  font-weight: bold;
+  color: #a877c8;
+}
 
+a:visited {
+  color: #a2da5b;
+}
