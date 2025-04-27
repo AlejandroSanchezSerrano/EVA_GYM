@@ -4,6 +4,7 @@ import { UserService } from '../../services/user.service';
 import { StorageService } from '../../services/storage.service';
 import { User } from '../../interfaces/user';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2'; // ¡Asegúrate de importar!
 
 @Component({
   selector: 'app-perfil',
@@ -51,28 +52,61 @@ export class PerfilComponent implements OnInit {
     const userName = localStorage.getItem('user_name');
   
     if (userIdString !== null && userName !== null) {
-      const confirmacion = prompt(`Para confirmar la eliminación, escribe: Eliminar ${userName}`);
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: 'btn btn-success mx-1',
+          cancelButton: 'btn btn-danger mx-1'
+        },
+        buttonsStyling: false
+      });
   
-      if (confirmacion === `Eliminar ${userName}`) {
-        const userId = Number(userIdString);
-  
-        this.userService.deleteUser(userId).subscribe({
-          next: (response) => {
-            console.log('Usuario eliminado:', response);
-            this.router.navigate(['/login']);
-          },
-          error: (error) => {
-            console.error('Error eliminando usuario:', error);
+      swalWithBootstrapButtons.fire({
+        title: '¿Estás seguro?',
+        text: `Esta acción eliminará tu cuenta (${userName}) permanentemente.`,
+        icon: 'warning',
+        input: 'text',
+        inputPlaceholder: `Escribe: Eliminar ${userName}`,
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
+        preConfirm: (inputValue) => {
+          if (inputValue !== `Eliminar ${userName}`) {
+            Swal.showValidationMessage(
+              `Debes escribir exactamente: Eliminar ${userName}`
+            );
           }
-        });
-      } else {
-        alert('Confirmación incorrecta. No se eliminó el usuario.');
-        console.log('Confirmación incorrecta. No se eliminó el usuario.');
-      }
+          return inputValue;
+        }
+      }).then((result) => {
+        if (result.isConfirmed && result.value === `Eliminar ${userName}`) {
+          const userId = Number(userIdString);
+  
+          this.userService.deleteUser(userId).subscribe({
+            next: (response) => {
+              console.log('Usuario eliminado:', response);
+              Swal.fire('¡Eliminado!', 'Tu cuenta ha sido eliminada.', 'success').then(() => {
+                this.router.navigate(['/login']);
+              });
+            },
+            error: (error) => {
+              console.error('Error eliminando usuario:', error);
+              Swal.fire('Error', 'Hubo un problema eliminando tu cuenta.', 'error');
+            }
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire(
+            'Cancelado',
+            'Tu cuenta está segura 🙂',
+            'error'
+          );
+        }
+      });
+  
     } else {
       console.error('No hay ID o nombre de usuario en localStorage.');
     }
-  }  
+  }
   
   editarPerfil() {
     this.router.navigate(['/edit']);

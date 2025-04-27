@@ -3,12 +3,14 @@ import { UserService } from '../../services/user.service';
 import { User } from '../../interfaces/user';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2'; 
 
 @Component({
   selector: 'app-register',
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.css'],
-  imports: [FormsModule]
+  imports: [FormsModule, CommonModule]
 })
 export class RegisterComponent {
   user: User = {
@@ -51,19 +53,22 @@ export class RegisterComponent {
   }
 
   onSubmit(): void {
+    // Si pasa todas las validaciones
     this.calculateCalories();
+  
     this.userService.createUser(this.user).subscribe(
       response => {
-        console.log('User created successfully:', response);
-        this.router.navigate(['/login']); // Redirigir al perfil
+        Swal.fire('¡Perfil creado!', 'Te has registrado exitosamente.', 'success').then(() => {
+          this.router.navigate(['/perfil']);
+        });
       },
       error => {
         console.error('Error creating user:', error);
-        alert('Hubo un error al registrar el usuario. Inténtalo de nuevo.');
+        Swal.fire("Error", "Hubo un error al registrar el usuario. Inténtalo de nuevo.", "error");
       }
     );
   }
-  
+
   irALogin() {
     this.router.navigate(['/login']);
   }

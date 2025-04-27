@@ -39,3 +39,7 @@ strong {
 .boton:hover * {
   color: #a877c8;
 }
+
+label:hover {
+  cursor: pointer;
+}

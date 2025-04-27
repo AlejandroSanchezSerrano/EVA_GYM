@@ -1,79 +1,146 @@
 <div class="text-light">
-    <div class="container p-3">
-      <div class="form-container">
-        <div class="card shadow p-4 rounded-4 bg-dark text-white">
-          <h2 class="text-center mb-4">Editar Perfil</h2>
-  
-          <form *ngIf="userForm" [formGroup]="userForm" (ngSubmit)="onSubmit()">
-            <div class="row g-2 mb-3">
-              <div class="col">
-                <label for="name" class="form-label text-white">Usuario:</label>
-                <input type="text" id="name" class="form-control bg-light text-dark" formControlName="name" required>
-              </div>
-              <div class="col">
-                <label for="age" class="form-label text-white">Edad:</label>
-                <input type="number" id="age" class="form-control bg-light text-dark" formControlName="age" required>
-              </div>
-            </div>
-  
-            <div class="row g-2 mb-3">
-              <div class="col">
-                <label for="weight" class="form-label text-white">Peso (kg):</label>
-                <input type="number" id="weight" class="form-control bg-light text-dark" formControlName="weight" required>
-              </div>
-              <div class="col">
-                <label for="height" class="form-label text-white">Altura (cm):</label>
-                <input type="number" id="height" class="form-control bg-light text-dark" formControlName="height" required>
+  <div class="container p-3">
+    <div class="form-container">
+      <div class="card shadow p-4 rounded-4 bg-dark text-white">
+        <h2 class="text-center mb-4">Editar Perfil</h2>
+
+        <form *ngIf="userForm" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+          <div class="row g-2 mb-3">
+            <div class="col">
+              <label for="name" class="form-label text-white">Usuario:</label>
+              <input 
+                type="text" 
+                id="name" 
+                class="form-control bg-light text-dark" 
+                formControlName="name"
+                [ngClass]="{'is-invalid': userForm.get('name')?.invalid && userForm.get('name')?.touched}"
+                required
+              >
+              <div *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched" class="invalid-feedback">
+                El nombre de usuario es obligatorio.
               </div>
             </div>
-  
-            <div class="row g-2 mb-3">
-              <div class="col">
-                <label for="gender" class="form-label text-white">Género:</label>
-                <select id="gender" class="form-select bg-light text-dark" formControlName="gender" required>
-                  <option value="male">Hombre</option>
-                  <option value="female">Mujer</option>
-                </select>
-              </div>
-              <div class="col">
-                <label for="activity_level" class="form-label text-white">Nivel de Actividad:</label>
-                <select id="activity_level" class="form-select bg-light text-dark" formControlName="activity_level" required>
-                  <option value="sedentary">Sedentario</option>
-                  <option value="light">Ligero</option>
-                  <option value="moderate">Moderado</option>
-                  <option value="active">Activo</option>
-                  <option value="very active">Muy Activo</option>
-                </select>
+
+            <div class="col">
+              <label for="age" class="form-label text-white">Edad:</label>
+              <input 
+                type="number" 
+                id="age" 
+                class="form-control bg-light text-dark" 
+                formControlName="age"
+                [ngClass]="{'is-invalid': userForm.get('age')?.invalid && userForm.get('age')?.touched}"
+                required
+              >
+              <div *ngIf="userForm.get('age')?.errors?.['min'] || userForm.get('age')?.errors?.['max']" class="invalid-feedback">
+                La edad debe ser entre 16 y 99 años.
               </div>
             </div>
-  
-            <div class="mb-3">
-              <label for="goal" class="form-label text-white">Objetivo:</label>
-              <select id="goal" class="form-select bg-light text-dark" formControlName="goal" required>
-                <option value="deficit">Déficit</option>
-                <option value="surplus">Superávit</option>
-              </select>
-            </div>
-  
-            <div class="mb-3">
-              <label for="daily_calories" class="form-label text-white">Calorías diarias:</label>
-              <input type="number" id="daily_calories" class="form-control bg-light text-dark" formControlName="daily_calories" required>
-            </div>
-  
-            <div class="d-flex justify-content-center w-100">
-              <button type="submit" class="btn btn-primary text-center w-50 mx-auto">Guardar Cambios</button>
-            </div>
-          </form>
-  
-          <div *ngIf="errorMessage" class="alert alert-danger mt-3 text-center">
-            {{ errorMessage }}
           </div>
-  
-          <div class="text-center mt-3">
-            <a routerLink="/perfil" class="text-primary" style="cursor: pointer;">Volver al Perfil</a>
-          </div>  
+
+          <div class="row g-2 mb-3">
+            <div class="col">
+              <label for="weight" class="form-label text-white">Peso (kg):</label>
+              <input 
+                type="number" 
+                id="weight" 
+                class="form-control bg-light text-dark" 
+                formControlName="weight"
+                [ngClass]="{'is-invalid': userForm.get('weight')?.invalid && userForm.get('weight')?.touched}"
+                required
+              >
+              <div *ngIf="userForm.get('weight')?.errors?.['min'] || userForm.get('weight')?.errors?.['max']" class="invalid-feedback">
+                El peso debe estar entre 30kg y 300kg.
+              </div>
+            </div>
+
+            <div class="col">
+              <label for="height" class="form-label text-white">Altura (cm):</label>
+              <input 
+                type="number" 
+                id="height" 
+                class="form-control bg-light text-dark" 
+                formControlName="height"
+                [ngClass]="{'is-invalid': userForm.get('height')?.invalid && userForm.get('height')?.touched}"
+                required
+              >
+              <div *ngIf="userForm.get('height')?.errors?.['min'] || userForm.get('height')?.errors?.['max']" class="invalid-feedback">
+                La altura debe estar entre 100cm y 250cm.
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-2 mb-3">
+            <div class="col">
+              <label for="gender" class="form-label text-white">Género:</label>
+              <select 
+                id="gender" 
+                class="form-select bg-light text-dark" 
+                formControlName="gender"
+                [ngClass]="{'is-invalid': userForm.get('gender')?.invalid && userForm.get('gender')?.touched}"
+                required
+              >
+                <option value="">Selecciona una opción</option>
+                <option value="male">Hombre</option>
+                <option value="female">Mujer</option>
+              </select>
+              <div *ngIf="userForm.get('gender')?.invalid && userForm.get('gender')?.touched" class="invalid-feedback">
+                El género es obligatorio.
+              </div>
+            </div>
+
+            <div class="col">
+              <label for="activity_level" class="form-label text-white">Nivel de Actividad:</label>
+              <select 
+                id="activity_level" 
+                class="form-select bg-light text-dark" 
+                formControlName="activity_level"
+                [ngClass]="{'is-invalid': userForm.get('activity_level')?.invalid && userForm.get('activity_level')?.touched}"
+                required
+              >
+                <option value="">Selecciona una opción</option>
+                <option value="sedentary">Sedentario</option>
+                <option value="light">Ligero</option>
+                <option value="moderate">Moderado</option>
+                <option value="active">Activo</option>
+                <option value="very active">Muy Activo</option>
+              </select>
+              <div *ngIf="userForm.get('activity_level')?.invalid && userForm.get('activity_level')?.touched" class="invalid-feedback">
+                El nivel de actividad es obligatorio.
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="goal" class="form-label text-white">Objetivo:</label>
+            <select 
+              id="goal" 
+              class="form-select bg-light text-dark" 
+              formControlName="goal"
+              [ngClass]="{'is-invalid': userForm.get('goal')?.invalid && userForm.get('goal')?.touched}"
+              required
+            >
+              <option value="">Selecciona una opción</option>
+              <option value="deficit">Déficit</option>
+              <option value="surplus">Superávit</option>
+            </select>
+            <div *ngIf="userForm.get('goal')?.invalid && userForm.get('goal')?.touched" class="invalid-feedback">
+              El objetivo es obligatorio.
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-center w-100">
+            <button type="submit" class="btn btn-primary text-center w-50 mx-auto" [disabled]="userForm.invalid">Guardar Cambios</button>
+          </div>
+        </form>
+
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3 text-center">
+          {{ errorMessage }}
         </div>
+
+        <div class="text-center mt-3">
+          <a (click)="irAPerfil()" class="text-primary" style="cursor: pointer;">Volver al Perfil</a>
+        </div>  
       </div>
     </div>
   </div>
-  
+</div>
