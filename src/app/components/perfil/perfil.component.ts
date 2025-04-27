@@ -42,9 +42,22 @@ export class PerfilComponent implements OnInit {
   }
 
   cerrarSesion() {
-    localStorage.removeItem('user_name');
-    localStorage.removeItem('user_id');
-    this.router.navigate(['/login']);
+    // localStorage.removeItem('user_id');
+    // localStorage.removeItem('user_name');
+    localStorage.clear();
+  
+    Swal.fire({
+      title: '¡Sesión cerrada!',
+      text: 'Has cerrado sesión correctamente.',
+      icon: 'success',
+      confirmButtonText: 'OK',
+      customClass: {
+        confirmButton: 'btn btn-primary'
+      },
+      buttonsStyling: false
+    }).then(() => {
+      this.router.navigate(['/login']); // Redirigir al login después de OK
+    });
   }
 
   eliminarCuenta() {
