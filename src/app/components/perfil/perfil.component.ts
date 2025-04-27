@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { StorageService } from '../../services/storage.service';
 import { User } from '../../interfaces/user';
@@ -16,7 +17,8 @@ export class PerfilComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private router: Router // Inyecta el servicio Router
   ) {}
 
   ngOnInit(): void {
@@ -29,10 +31,12 @@ export class PerfilComponent implements OnInit {
         error: (err) => {
           this.errorMessage = 'No se pudieron obtener los datos del usuario.';
           console.error(err);
+          this.router.navigate(['/login']); // Redirige en caso de error
         }
       });
     } else {
       this.errorMessage = 'No hay usuario identificado en localStorage.';
+      this.router.navigate(['/login']); // Redirige si no hay user_id
     }
   }
 }
