@@ -34,4 +34,8 @@ export class UserService {
     return this.http.post<any>(`${this.apiUrl}/controller/deleteUser.php`, { id }, httpOptions);
   }
   
+  updateUser(user: User): Observable<any> {
+    console.log("Enviando actualización de usuario:", user);
+    return this.http.post<any>(`${this.apiUrl}/controller/updateUser.php`, user, httpOptions);
+  }  
 }

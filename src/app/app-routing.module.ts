@@ -5,6 +5,7 @@ import { InicioComponent } from './components/inicio/inicio.component';
 import { LoginComponent } from './components/login/login.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { Error404Component } from './components/error404/error404.component';
+import { EditComponent } from './components/edit/edit.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/inicio', pathMatch: 'full' },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'registro', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'perfil', component: PerfilComponent },
+  { path: 'edit', component: EditComponent },
   { path: '**', component: Error404Component }
 ];
 
