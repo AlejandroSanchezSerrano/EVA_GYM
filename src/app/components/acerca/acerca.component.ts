@@ -15,7 +15,7 @@ export class AcercaComponent implements OnInit {
 
   ngOnInit() {
     this.githubService.getCommits().subscribe(data => {
-      this.commits = data.slice(0,5); // Mostrar los últimos 5 commits
+      this.commits = data.slice(0,10); // Mostrar los últimos 5 commits
     });
   }
 }

@@ -1,19 +1,30 @@
-<div class="container my-5">
-    <h1 class="text-center mb-4 text-white">Últimas actualizaciones</h1>
-    <ul class="list-group" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 10px;">
-      <li *ngFor="let commit of commits" class="list-group-item bg-transparent text-white border-0">
-        <div class="fw-bold">
-          {{ commit.commit.message.split('\n')[0] }}
+<div class="container-fluid">
+    <div class="row vh-100">
+      
+      <!-- Sidebar de actualizaciones -->
+      <div class="col-md-4 d-flex flex-column p-4" style="background-color: rgba(0, 0, 0, 1);">
+        <h1 class="text-center text-white mb-4">Últimas actualizaciones</h1>
+        <ul class="list-group">
+          <li *ngFor="let commit of commits" class="list-group-item d-flex justify-content-between align-items-start bg-transparent text-white border-0">
+            <div class="ms-2 me-auto">
+              <!-- <div class="fw-bold">{{ commit.commit.author.name }}</div> -->
+              {{ commit.commit.message }}
+            </div>
+            <span class="badge rounded-pill" style="background-color: #a877c8;">
+              {{ commit.commit.author.date | date:'shortDate' }}
+            </span>
+          </li>
+        </ul>
+      </div>
+  
+      <!-- Contenido principal centrado -->
+      <div class="col-md-8 d-flex justify-content-center p-4">
+        <div class="text-center">
+          <h1>Acerca de Nosotros</h1>
+          <p>Aún no hay nada que mostrar.</p>
         </div>
-        <div class="text-muted">
-          {{ commit.commit.message.split('\n')[1] }}
-        </div>
-        <div class="text-end mt-2">
-          <span class="badge rounded-pill" style="background-color: #a877c8;">
-            {{ commit.commit.author.date | date:'shortDate' }}
-          </span>
-        </div>
-      </li>
-    </ul>
+      </div>
+  
+    </div>
   </div>
   
