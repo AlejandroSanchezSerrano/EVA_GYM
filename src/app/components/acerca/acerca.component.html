@@ -2,7 +2,7 @@
     <div class="row vh-100">
       
       <!-- Sidebar de actualizaciones -->
-      <div class="col-md-4 d-flex flex-column p-4" style="background-color: rgba(0, 0, 0, 1);">
+      <div class="col-md-4 d-flex flex-column p-4 bg-dark">
         <h1 class="text-center text-white mb-4">Últimas actualizaciones</h1>
         <ul class="list-group">
           <li *ngFor="let commit of commits" class="list-group-item d-flex justify-content-between align-items-start bg-transparent text-white border-0">
@@ -19,12 +19,62 @@
   
       <!-- Contenido principal centrado -->
       <div class="col-md-8 d-flex justify-content-center p-4">
-        <div class="text-center">
-          <h1>Acerca de Nosotros</h1>
-          <p>Aún no hay nada que mostrar.</p>
-        </div>
+        <div class="">
+            <h1 class="text-center">Sobre Nosotros</h1>
+            <p class="mt-4">
+              <em>"Embárcate en tu sincronización personal."</em>
+            </p>
+            <p class="mt-3">
+              Bienvenido a <strong>EVA GYM</strong>, un espacio diseñado para ayudarte a alcanzar tu máximo potencial físico, mental y emocional.
+            </p>
+            <p>
+              Inspirados en la icónica serie <em>Neon Genesis Evangelion</em> y en la fuerza del <strong>EVA Unit 01</strong>, hemos creado una herramienta donde puedes registrar tu <strong>peso</strong>, <strong>ingesta calórica</strong> y <strong>rutinas de ejercicios</strong> de manera precisa y estilizada.
+            </p>
+            <p>
+              Así como los pilotos buscan la sincronización perfecta con sus EVAs, aquí tú buscarás la sincronización perfecta con tu cuerpo.
+            </p>
+          
+            <h4 class="mt-4">Nuestro objetivo:</h4>
+            <ul class="list-unstyled mt-3">
+              <li>• Monitorear tu evolución día a día.</li>
+              <li>• Optimizar tu nutrición para alcanzar un mejor rendimiento.</li>
+              <li>• Potenciar tus entrenamientos con seguimiento y disciplina.</li>
+            </ul>
+          
+            <p class="mt-4">
+              En este universo, <strong>tú eres el piloto</strong>. ¡Prepárate para combatir tus propios ángeles internos y alcanzar niveles que jamás pensaste posibles!
+            </p>
+          
+            <h2 class="mt-5 fw-bold">
+                Supera tus límites. Activa el modo Berserk.
+            </h2>
+
+            <p class="mt-3">
+                Al iniciar la aplicación, tendrás acceso a un <strong>breve tutorial</strong> que te guiará paso a paso para dominar todas las funciones de EVA GYM, para ir directamente a él, puedes usar el siguiente enlace.
+            </p>
+
+            <div class="btn">
+                <a (click)="irAInicio()" class="text-decoration-none" style="cursor: pointer;">Inicio</a>
+            </div>
+            
+            <h4 class="mt-5">Sobre Mi:</h4>
+
+            <p class="mt-4">
+                Hola, soy <strong>Alejandro Sánchez Serrano</strong>.
+              </p>
+            
+              <p class="mt-3">
+                He finalizado mis estudios en el Grado Medio de <strong>Sistemas Microinformáticos y Redes (SMR)</strong> y el Grado Superior de <strong>Desarrollo de Aplicaciones Web (DAW)</strong>.
+                Mi pasión por el mundo del desarrollo abarca tanto el <strong>Frontend</strong> como el <strong>Backend</strong>, disfrutando de crear experiencias completas, sólidas y funcionales.
+                Espero sinceramente que esta aplicación sea de utilidad para todos aquellos que buscan mejorar su rendimiento y registrar su progreso de forma clara y eficiente.
+                Para cualquier pregunta o sugerencia puedes acceder a mis datos de contacto abajo del todo!!.
+              </p>
+            
+              <p class="mt-4">
+                ¡Gracias por ser parte de esta sincronización!
+              </p>
+          </div>
       </div>
-  
     </div>
   </div>
   
