@@ -7,11 +7,6 @@
         <input type="number" id="weight" formControlName="weight" step="0.01" class="form-control" placeholder="Introduce tu peso">
       </div>
   
-      <!-- <div class="mb-3">
-        <label for="date" class="form-label">Fecha:</label>
-        <input type="datetime-local" id="date" formControlName="date" class="form-control">
-      </div> -->
-  
       <div class="d-flex gap-2">
         <button type="submit" class="btn btn-primary" [disabled]="weightForm.invalid">
           {{ editingWeight ? 'Actualizar' : 'Guardar' }}
@@ -24,18 +19,21 @@
   
     <h2 class="text-center mb-3 text-white">Pesos Registrados</h2>
   
-    <div *ngIf="weights.length > 0; else noWeights">
-      <ul class="list-group">
-        <li *ngFor="let w of weights" class="list-group-item d-flex justify-content-between align-items-center">
-          <div>
-            <strong>{{ w.weight }} kg</strong> - <small>{{ w.date | date:'short' }}</small>
+    <div *ngIf="weights.length > 0; else noWeights" class="row g-3">
+      <div *ngFor="let w of weights" class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <div class="mb-3">
+              <h5 class="card-title">{{ w.weight }} kg</h5>
+              <p class="card-text"><small class="text-muted">{{ w.date | date:'short' }}</small></p>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-outline-primary flex-fill" (click)="editWeight(w)">Editar</button>
+              <button class="btn btn-sm btn-outline-danger flex-fill" (click)="deleteWeight(w.id)">Eliminar</button>
+            </div>
           </div>
-          <div class="btn-group">
-            <button class="btn btn-sm btn-outline-primary" (click)="editWeight(w)">Editar</button>
-            <button class="btn btn-sm btn-outline-danger" (click)="deleteWeight(w.id)">Eliminar</button>
-          </div>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
   
     <ng-template #noWeights>
