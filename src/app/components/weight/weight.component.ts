@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'; // Asegúrate de importar SweetAlert2
 @Component({
   selector: 'app-weight',
   templateUrl: './weight.component.html',
+  styleUrl: './weight.component.css',
   imports: [ReactiveFormsModule, CommonModule]
 })
 export class WeightComponent implements OnInit {
