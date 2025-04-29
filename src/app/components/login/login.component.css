@@ -2,6 +2,28 @@
     width: 100%;
   }
   
+  .btn {
+    width: 160px;
+  }
+  
+  
+  .boton {
+    background-color: #a877c8;
+  }
+  
+  .boton:hover {
+    background-color: #a2da5b;
+  }
+  
+  .boton * {
+    color: #a2da5b;
+    font-weight: bold;
+  }
+  
+  .boton:hover * {
+    color: #a877c8;
+  }
+
   @media (min-width: 768px) and (max-width: 991.98px) {
     /* Tablets (pantallas medianas) */
     .login {
