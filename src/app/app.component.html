@@ -1,51 +1,20 @@
 <header class="bg-dark sticky-lg-top w-100">
   <div class="d-flex w-100 justify-content-center align-content-center">
-    <!-- <h1 class="titulazo">EVA GYM</h1> -->
-     <img src="https://res.cloudinary.com/drikoem6d/image/upload/tititle2_wfmyek.png" alt="Logo" class="mt-2" style="max-width: 300px;">
-    <!-- <img style="height: 100px; float:right;" src="https://res.cloudinary.com/drikoem6d/image/upload/v1743762097/Dise%C3%B1o_sin_t%C3%ADtulo_bqbdk4.png" alt="EVA01"> -->
+    <img src="https://res.cloudinary.com/drikoem6d/image/upload/tititle2_wfmyek.png" alt="Logo" class="mt-2" style="max-width: 300px;">
   </div>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" [routerLinkActive]="['active']" routerLink="/inicio">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLinkActive]="['active']" routerLink="/peso">Mis Pesos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLinkActive]="['active']" routerLink="/calorias">Mis Calorias</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLinkActive]="['active']" routerLink="/ejercicios">Mis Ejercicios</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="getPerfilLink()" [routerLinkActive]="['active']">Perfil</a>
-                </li>                
-                <li class="nav-item">
-                  <a class="nav-link" [routerLinkActive]="['active']" routerLink="/acerca">Acerca De</a>
-              </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-</header>
 
-<main>
-  <router-outlet></router-outlet>
-</main>
+      <!-- Toggle para móviles -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-<footer class="bg-dark text-white p-3">
-  <div class="container text-start">
-    <div class="row">
-      <div class="col-md-4 mb-3">
-        <h5>Sobre Mi</h5>
-        <p>Buenas, soy Alejandro Sanchez Serrano, un chaval que esta por terminar el grado superior de DAW y este es mi TFG, si le estas dando uso significa que me a salido bien y es util, disfruta :D</p>
-      </div>
-      <div class="col-md-4 mb-3">
-        <h5>Enlaces</h5>
-        <ul class="list-unstyled">
+      <!-- Menú colapsable -->
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav text-center">
           <li class="nav-item">
             <a class="nav-link" [routerLinkActive]="['active']" routerLink="/inicio">Inicio</a>
         </li>
@@ -63,6 +32,45 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" [routerLinkActive]="['active']" routerLink="/acerca">Acerca De</a>
+      </li>          
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="bg-dark text-white p-3">
+  <div class="container text-start">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <h5>Sobre Mi</h5>
+        <p>Buenas, soy Alejandro Sanchez Serrano, un chaval que esta por terminar el grado superior de DAW y este es mi TFG, si le estas dando uso significa que me a salido bien y es util, disfruta :D</p>
+      </div>
+      <div class="col-md-4 mb-3">
+        <h5>Enlaces</h5>
+        <ul class="list-unstyled">
+          <li class="nav-item">
+            <a class="nav-link p-0" [routerLinkActive]="['active']" routerLink="/inicio">Inicio</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link p-0" [routerLinkActive]="['active']" routerLink="/peso">Mis Pesos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link p-0" [routerLinkActive]="['active']" routerLink="/calorias">Mis Calorias</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link p-0" [routerLinkActive]="['active']" routerLink="/ejercicios">Mis Ejercicios</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link p-0" [routerLinkActive]="['active']" routerLink="/perfil">Perfil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link p-0" [routerLinkActive]="['active']" routerLink="/acerca">Acerca De</a>
       </li>          
         </ul>
       </div>
