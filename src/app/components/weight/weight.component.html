@@ -1,0 +1,45 @@
+<div class="container py-4">
+    <h1 class="mb-4 text-center text-white">{{ editingWeight ? 'Editar Peso' : 'Añadir Peso' }}</h1>
+  
+    <form [formGroup]="weightForm" (ngSubmit)="saveWeight()" class="card p-4 shadow-sm">
+      <div class="mb-3">
+        <label for="weight" class="form-label">Peso (kg):</label>
+        <input type="number" id="weight" formControlName="weight" step="0.01" class="form-control" placeholder="Introduce tu peso">
+      </div>
+  
+      <!-- <div class="mb-3">
+        <label for="date" class="form-label">Fecha:</label>
+        <input type="datetime-local" id="date" formControlName="date" class="form-control">
+      </div> -->
+  
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary" [disabled]="weightForm.invalid">
+          {{ editingWeight ? 'Actualizar' : 'Guardar' }}
+        </button>
+        <button type="button" class="btn btn-secondary" *ngIf="editingWeight" (click)="cancelEdit()">Cancelar</button>
+      </div>
+    </form>
+  
+    <hr class="my-4">
+  
+    <h2 class="text-center mb-3 text-white">Pesos Registrados</h2>
+  
+    <div *ngIf="weights.length > 0; else noWeights">
+      <ul class="list-group">
+        <li *ngFor="let w of weights" class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ w.weight }} kg</strong> - <small>{{ w.date | date:'short' }}</small>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-sm btn-outline-primary" (click)="editWeight(w)">Editar</button>
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteWeight(w.id)">Eliminar</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  
+    <ng-template #noWeights>
+      <p class="text-center text-muted">No hay registros de peso aún.</p>
+    </ng-template>
+  </div>
+  
