@@ -150,11 +150,30 @@ export class WeightComponent implements OnInit {
   }
 
   deleteWeight(weightId: number): void {
-    this.weightService.deleteWeight(weightId)
-      .subscribe(response => {
-        this.loadWeights();
-      });
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción eliminará el peso registrado de forma permanente.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.weightService.deleteWeight(weightId)
+          .subscribe(response => {
+            this.loadWeights();
+            Swal.fire({
+              icon: 'success',
+              title: 'Eliminado',
+              text: 'El peso ha sido eliminado correctamente.'
+            });
+          });
+      }
+    });
   }
+  
 
   cancelEdit(): void {
     this.editingWeight = null;
