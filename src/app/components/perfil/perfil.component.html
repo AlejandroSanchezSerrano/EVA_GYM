@@ -3,15 +3,17 @@
 
     <div *ngIf="user; else loadingOrError" class="bg-dark p-3 rounded contenedor mx-auto">
       <h1 class="text-center">Perfil de <label>{{ user.name }}</label></h1>
-      <p><strong>Nombre:</strong> {{ user.name }}</p>
+      <p><strong>Usuario:</strong> {{ user.name }}</p>
       <p><strong>Edad:</strong> {{ user.age }} años</p>
       <p><strong>Peso:</strong> {{ user.weight }} kg</p>
       <p><strong>Altura:</strong> {{ user.height }} cm</p>
       <p><strong>Género:</strong> {{ user.gender === 'male' ? 'Hombre' : 'Mujer' }}</p>
+      <hr>
       <p><strong>Nivel de actividad:</strong> {{ user.activity_level }}</p>
       <p><strong>Objetivo:</strong> {{ user.goal === 'deficit' ? 'Déficit calórico' : 'Superávit calórico' }}</p>
       <p><strong>Calorías diarias:</strong> {{ user.daily_calories }} kcal</p>
       <p><strong>IMC:</strong> {{ IMC(user.weight, user.height) }}</p>
+      <p><strong>% Grasa:</strong> {{ grasaCorporal(user.weight, user.height, user.age, user.gender) | number:'1.1-1' }}</p>
     </div>
   
     <ng-template #loadingOrError>

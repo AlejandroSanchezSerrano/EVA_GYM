@@ -63,6 +63,24 @@ export class PerfilComponent implements OnInit {
     }
   }
 
+  grasaCorporal(peso:number, altura:number, edad:number, genero:string) {
+    altura = altura/100;
+    let imc:number = 0;
+    imc = peso/(altura ** 2);
+
+    let multi:number = 0;
+    if (genero==='male') {
+      multi = 1;
+    } else {
+      multi = 2;
+    }
+
+    let porcentaje:number;
+    porcentaje = (1.2*imc) + (0.23*edad) - (10.8*multi) - 5.4;
+
+    return porcentaje;
+  }
+
   cerrarSesion() {
     // localStorage.removeItem('user_id');
     // localStorage.removeItem('user_name');
