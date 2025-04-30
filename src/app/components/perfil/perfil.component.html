@@ -9,11 +9,11 @@
       <p><strong>Altura:</strong> {{ user.height }} cm</p>
       <p><strong>Género:</strong> {{ user.gender === 'male' ? 'Hombre' : 'Mujer' }}</p>
       <hr>
-      <p><strong>Nivel de actividad:</strong> {{ user.activity_level }}</p>
-      <p><strong>Objetivo:</strong> {{ user.goal === 'deficit' ? 'Déficit calórico' : 'Superávit calórico' }}</p>
+      <p><strong>Nivel de actividad:</strong> {{ actividad(user.activity_level) }}</p>
+      <p><strong>Objetivo:</strong> {{ user.goal === 'deficit' ? 'Déficit Calórico' : 'Superávit Calórico' }}</p>
       <p><strong>Calorías diarias:</strong> {{ user.daily_calories }} kcal</p>
       <p><strong>IMC:</strong> {{ IMC(user.weight, user.height) }}</p>
-      <p><strong>% Grasa:</strong> {{ grasaCorporal(user.weight, user.height, user.age, user.gender) | number:'1.1-1' }}</p>
+      <p><strong>Porcentaje de grasa:</strong> {{ grasaCorporal(user.weight, user.height, user.age, user.gender) | number:'1.1-1' }}%</p>
     </div>
   
     <ng-template #loadingOrError>

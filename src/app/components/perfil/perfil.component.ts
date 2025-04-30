@@ -81,6 +81,20 @@ export class PerfilComponent implements OnInit {
     return porcentaje;
   }
 
+  actividad(actividad:string) {
+    if (actividad==='sedentary') {
+      return "Sedentario";
+    } else if (actividad==='light') {
+      return "Ligero";
+    } else if (actividad==='moderate') {
+      return "Moderado";
+    } else if (actividad==='intense') {
+      return 'Activo';
+    } else {
+      return 'Muy Activo';
+    }
+  }
+
   cerrarSesion() {
     // localStorage.removeItem('user_id');
     // localStorage.removeItem('user_name');
