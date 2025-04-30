@@ -22,7 +22,7 @@ jobs:
       run: npm install
 
     - name: Construimos el proyecto
-      run: npm run build -- --base-href=https://alejandro.is-a.dev/evagym/
+      run: npm run build -- --base-href=https://alejandro.is-a.dev/eva_gym/
 
     - name: Subir archivos por FTP
       uses: SamKirkland/FTP-Deploy-Action@4.3.0
@@ -31,7 +31,8 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: dist/eva-gym/browser/
-        server-dir: /var/www/html/sancheza/evagym/
+        server-dir: /var/www/html/sancheza/eva_gym/
+        dangerous-clean-slate: true
 
     - name: Cambiar permisos a 755 para archivos y carpetas
       uses: appleboy/ssh-action@v0.1.5
