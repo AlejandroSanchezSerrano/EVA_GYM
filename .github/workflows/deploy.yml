@@ -1,0 +1,33 @@
+name: Subida automática a RUIX | EVA GYM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  despliegue-por-ftp:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Obtener el código del repositorio
+      uses: actions/checkout@v2
+
+    - name: Subir archivos por FTP
+      uses: SamKirkland/FTP-Deploy-Action@4.3.0
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        server-dir: sancheza/evagym/
+        local-dir: ./
+
+    - name: Cambiar permisos a 755 para archivos y carpetas
+      uses: appleboy/ssh-action@v0.1.5
+      with:
+        host: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        script: |
+            find sancheza/evagym -type f -exec chmod 755 {} \;
+            find sancheza/evagym -type d -exec chmod 755 {} \;
