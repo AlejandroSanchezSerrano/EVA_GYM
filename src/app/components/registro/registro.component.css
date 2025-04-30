@@ -1,26 +1,25 @@
 .form-container {
-    max-width: 500px;
-    margin: auto;
+  max-width: 500px;
+  margin: auto;
 }
 
 .btn {
-    width: 160px;
-  }
-  
-  
-  .boton {
-    background-color: #a877c8;
-  }
-  
-  .boton:hover {
-    background-color: #a2da5b;
-  }
-  
-  .boton * {
-    color: #a2da5b;
-    font-weight: bold;
-  }
-  
-  .boton:hover * {
-    color: #a877c8;
-  }
+  width: 160px;
+}
+
+.boton {
+  background-color: #a877c8;
+}
+
+.boton:hover {
+  background-color: #a2da5b;
+}
+
+.boton * {
+  color: #a2da5b;
+  font-weight: bold;
+}
+
+.boton:hover * {
+  color: #a877c8;
+}

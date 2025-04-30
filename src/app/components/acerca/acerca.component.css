@@ -1,20 +1,20 @@
 * {
-    color: white;
+  color: white;
 }
 
 .btn {
-    background-color: #a877c8;
-    font-weight: bold;
+  background-color: #a877c8;
+  font-weight: bold;
 }
 
 .btn:hover {
-    background-color: #a2da5b;
+  background-color: #a2da5b;
 }
 
 .btn a {
-    color: #a2da5b;
+  color: #a2da5b;
 }
 
 .btn:hover a {
-    color: #a877c8;
+  color: #a877c8;
 }

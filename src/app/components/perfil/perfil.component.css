@@ -23,7 +23,6 @@ strong {
   width: 160px;
 }
 
-
 .boton {
   background-color: #a877c8;
 }
@@ -45,10 +44,9 @@ label:hover {
 }
 
 hr {
-  height: 2px;   
+  height: 2px;
   background-color: #a877c8;
 }
-
 
 @media (min-width: 768px) and (max-width: 991.98px) {
   /* Tablets (pantallas medianas) */
