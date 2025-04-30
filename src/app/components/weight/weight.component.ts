@@ -97,49 +97,53 @@ export class WeightComponent implements OnInit {
 }
 
 
-  updateChart(): void {
-    const labels = this.weights.map(w => new Date(w.date).toLocaleDateString());
-    const data = this.weights.map(w => w.weight);
+updateChart(): void {
+  // Ordenar por fecha ascendente
+  const sortedWeights = [...this.weights].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-    if (this.chart) {
-      this.chart.destroy(); // Destruye el gráfico anterior para evitar conflictos
-    }
+  const labels = sortedWeights.map(w => new Date(w.date).toLocaleDateString());
+  const data = sortedWeights.map(w => w.weight);
 
-    const ctx = document.getElementById('weightChart') as HTMLCanvasElement;
+  if (this.chart) {
+    this.chart.destroy(); // Destruye el gráfico anterior
+  }
 
-    this.chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Peso (kg)',
-          data: data,
-          borderColor: 'rgba(135,242,87,255)',
-          backgroundColor: 'rgba(132,69,190,255)',
-          tension: 0.3
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: 'Fecha'
-            }
-          },
-          y: {
-            title: {
-              display: true,
-              text: 'Peso (kg)'
-            },
-            beginAtZero: true
+  const ctx = document.getElementById('weightChart') as HTMLCanvasElement;
+
+  this.chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Peso (kg)',
+        data: data,
+        borderColor: 'rgba(135,242,87,255)',
+        backgroundColor: 'rgba(132,69,190,255)',
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Fecha'
           }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Peso (kg)'
+          },
+          beginAtZero: true
         }
       }
-    });
-  }
+    }
+  });
+}
+
 
   editWeight(weight: any): void {
     this.editingWeight = weight;
