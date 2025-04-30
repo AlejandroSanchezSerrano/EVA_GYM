@@ -11,6 +11,7 @@
       <p><strong>Nivel de actividad:</strong> {{ user.activity_level }}</p>
       <p><strong>Objetivo:</strong> {{ user.goal === 'deficit' ? 'Déficit calórico' : 'Superávit calórico' }}</p>
       <p><strong>Calorías diarias:</strong> {{ user.daily_calories }} kcal</p>
+      <p><strong>IMC:</strong> {{ IMC(user.weight, user.height) }}</p>
     </div>
   
     <ng-template #loadingOrError>

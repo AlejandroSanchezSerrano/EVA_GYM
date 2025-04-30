@@ -41,6 +41,28 @@ export class PerfilComponent implements OnInit {
     }
   }
 
+  IMC(peso:number, altura:number): string {
+    altura = altura/100;
+    let imc:number = 0;
+    imc = peso/(altura ** 2);
+
+    if (imc < 18.5) {
+      return "Bajo Peso";
+    } else if (imc >= 18.5 && imc < 24.9) {
+      return "Peso Normal";
+    } else if (imc >= 25 && imc < 29.9) {
+      return "Sobrepeso";
+    } else if (imc >= 30 && imc < 34.9) {
+      return "Obesidad grado I";
+    } else if (imc >= 35 && imc < 39.9) {
+      return "Obesidad grado II";
+    } else if (imc >= 40) {
+      return "Obesidad grado III (mórbida)";
+    } else {
+      return "No se ha podido calcular el IMC";
+    }
+  }
+
   cerrarSesion() {
     // localStorage.removeItem('user_id');
     // localStorage.removeItem('user_name');
