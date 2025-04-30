@@ -3,6 +3,7 @@ import { WeightService } from '../../services/weight.service';
 import { Chart, registerables } from 'chart.js'; 
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 Chart.register(...registerables);
 
@@ -15,20 +16,26 @@ Chart.register(...registerables);
 })
 export class WeightComponent implements OnInit {
   weights: any[] = [];
-  userId: number;
+  userId!: number;
   chart: Chart | null = null;
+  isLoggedIn: boolean = false;
 
-  constructor(private weightService: WeightService) {
+  constructor(private weightService: WeightService, private router: Router) {
     const storedUserId = localStorage.getItem('user_id');
     if (storedUserId) {
       this.userId = parseInt(storedUserId, 10);
-    } else {
-      throw new Error('No se encontró user_id en localStorage.');
+      this.isLoggedIn = true;
     }
   }
 
   ngOnInit(): void {
-    this.loadWeights();
+    if (this.isLoggedIn) {
+      this.loadWeights();
+    }
+  }
+
+  irALogin() {
+    this.router.navigate(['/login']);
   }
 
   loadWeights(): void {
