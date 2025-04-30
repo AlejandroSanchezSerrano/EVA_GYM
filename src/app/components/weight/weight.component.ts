@@ -1,34 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { WeightService } from '../../services/weight.service';
 import { Chart, registerables } from 'chart.js'; 
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 
-Chart.register(...registerables); // Registrar los componentes de Chart.js
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-weight',
   templateUrl: './weight.component.html',
   styleUrls: ['./weight.component.css'],
-  imports: [ReactiveFormsModule, CommonModule]
+  standalone: true,
+  imports: [CommonModule]
 })
 export class WeightComponent implements OnInit {
-  weightForm: FormGroup;
   weights: any[] = [];
   userId: number;
-  editingWeight: any = null;
-  chart: Chart | null = null; // Inicializamos la propiedad chart como null
+  chart: Chart | null = null;
 
-  constructor(
-    private fb: FormBuilder,
-    private weightService: WeightService
-  ) {
-    this.weightForm = this.fb.group({
-      weight: ['', [Validators.required, Validators.min(0)]],
-      date: [new Date().toISOString().substring(0, 16), Validators.required]
-    });
-
+  constructor(private weightService: WeightService) {
     const storedUserId = localStorage.getItem('user_id');
     if (storedUserId) {
       this.userId = parseInt(storedUserId, 10);
@@ -46,7 +36,7 @@ export class WeightComponent implements OnInit {
       .subscribe(response => {
         if (Array.isArray(response)) {
           this.weights = response;
-          this.updateChart(); // Actualiza el gráfico cuando se cargan los pesos
+          this.updateChart();
         } else {
           console.error('Error inesperado al cargar los pesos:', response);
         }
@@ -55,101 +45,76 @@ export class WeightComponent implements OnInit {
       });
   }
 
-  saveWeight(): void {
-  if (this.weightForm.invalid) {
-    return;
-  }
-
-  const { weight, date } = this.weightForm.value;
-
-  if (this.editingWeight) {
-    // Editando peso existente
-    this.weightService.updateWeight(this.editingWeight.id, weight, date)
-      .subscribe(response => {
-        this.editingWeight = null;
-        this.weightForm.reset({
-          weight: '',
-          date: new Date().toISOString().substring(0, 16)
-        });
-        this.loadWeights();
-        Swal.fire({
-          icon: 'success',
-          title: 'Peso actualizado',
-          text: 'El peso ha sido actualizado correctamente.'
-        });
-      });
-  } else {
-    // Creando nuevo peso
-    this.weightService.createWeight(weight, date, this.userId)
-      .subscribe(response => {
-        this.weightForm.reset({
-          weight: '',
-          date: new Date().toISOString().substring(0, 16)
-        });
-        this.loadWeights();
-        Swal.fire({
-          icon: 'success',
-          title: 'Peso guardado',
-          text: 'El nuevo peso ha sido registrado correctamente.'
-        });
-      });
-  }
-}
-
-
-updateChart(): void {
-  // Ordenar por fecha ascendente
-  const sortedWeights = [...this.weights].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-
-  const labels = sortedWeights.map(w => new Date(w.date).toLocaleDateString());
-  const data = sortedWeights.map(w => w.weight);
-
-  if (this.chart) {
-    this.chart.destroy(); // Destruye el gráfico anterior
-  }
-
-  const ctx = document.getElementById('weightChart') as HTMLCanvasElement;
-
-  this.chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Peso (kg)',
-        data: data,
-        borderColor: 'rgba(135,242,87,255)',
-        backgroundColor: 'rgba(132,69,190,255)',
-        tension: 0.3
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: 'Fecha'
-          }
-        },
-        y: {
-          title: {
-            display: true,
-            text: 'Peso (kg)'
-          },
-          beginAtZero: true
+  addWeight(): void {
+    Swal.fire({
+      title: 'Añadir Peso',
+      input: 'number',
+      inputLabel: 'Introduce tu peso en kg',
+      inputAttributes: {
+        step: '0.01',
+        min: '0'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Guardar',
+      cancelButtonText: 'Cancelar',
+      inputValidator: (value) => {
+        if (!value || isNaN(+value) || +value <= 0) {
+          return 'Introduce un peso válido';
         }
+        return null;
       }
-    }
-  });
-}
+    }).then(result => {
+      if (result.isConfirmed && result.value) {
+        const peso = parseFloat(result.value);
+        const fechaActual = new Date().toISOString().substring(0, 16);
 
+        this.weightService.createWeight(peso, fechaActual, this.userId)
+          .subscribe(() => {
+            this.loadWeights();
+            Swal.fire({
+              icon: 'success',
+              title: 'Peso guardado',
+              text: 'El nuevo peso ha sido registrado correctamente.'
+            });
+          });
+      }
+    });
+  }
 
   editWeight(weight: any): void {
-    this.editingWeight = weight;
-    this.weightForm.setValue({
-      weight: weight.weight,
-      date: weight.date.substring(0, 16)
+    Swal.fire({
+      title: 'Editar Peso',
+      input: 'number',
+      inputLabel: 'Actualiza el peso en kg',
+      inputValue: weight.weight,
+      inputAttributes: {
+        step: '0.01',
+        min: '0'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Actualizar',
+      cancelButtonText: 'Cancelar',
+      inputValidator: (value) => {
+        if (!value || isNaN(+value) || +value <= 0) {
+          return 'Introduce un peso válido';
+        }
+        return null;
+      }
+    }).then(result => {
+      if (result.isConfirmed && result.value) {
+        const nuevoPeso = parseFloat(result.value);
+        const fechaActual = new Date().toISOString().substring(0, 16);
+
+        this.weightService.updateWeight(weight.id, nuevoPeso, fechaActual)
+          .subscribe(() => {
+            this.loadWeights();
+            Swal.fire({
+              icon: 'success',
+              title: 'Peso actualizado',
+              text: 'El peso ha sido actualizado correctamente.'
+            });
+          });
+      }
     });
   }
 
@@ -166,7 +131,7 @@ updateChart(): void {
     }).then((result) => {
       if (result.isConfirmed) {
         this.weightService.deleteWeight(weightId)
-          .subscribe(response => {
+          .subscribe(() => {
             this.loadWeights();
             Swal.fire({
               icon: 'success',
@@ -177,13 +142,50 @@ updateChart(): void {
       }
     });
   }
-  
 
-  cancelEdit(): void {
-    this.editingWeight = null;
-    this.weightForm.reset({
-      weight: '',
-      date: new Date().toISOString().substring(0, 16)
+  updateChart(): void {
+    const sortedWeights = [...this.weights].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+    const labels = sortedWeights.map(w => new Date(w.date).toLocaleDateString());
+    const data = sortedWeights.map(w => w.weight);
+
+    if (this.chart) {
+      this.chart.destroy();
+    }
+
+    const ctx = document.getElementById('weightChart') as HTMLCanvasElement;
+
+    this.chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Peso (kg)',
+          data: data,
+          borderColor: 'rgba(135,242,87,255)',
+          backgroundColor: 'rgba(132,69,190,255)',
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Fecha'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Peso (kg)'
+            },
+            beginAtZero: true
+          }
+        }
+      }
     });
   }
 }
