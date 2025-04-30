@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2'; 
 
 @Component({
   selector: 'app-login',
@@ -24,11 +25,19 @@ export class LoginComponent {
     this.userService.login(this.credentials).subscribe(
       response => {
         console.log('Login successful:', response);
-        // Guardar el token o ID del usuario en localStorage o sessionStorage
         localStorage.setItem('user_id', response.user_id);
         localStorage.setItem('user_name', response.name );
-        // Redirigir al usuario a la página de perfil u otra página protegida
-        this.router.navigate(['/perfil']);
+
+        // Mostrar alerta de éxito
+        Swal.fire({
+          icon: 'success',
+          title: '¡Bienvenido!',
+          text: `Hola ${response.name}, has iniciado sesión correctamente.`,
+          confirmButtonText: 'Continuar'
+        }).then(() => {
+          // Redirigir después de cerrar el Swal
+          this.router.navigate(['/perfil']);
+        });
       },
       error => {
         console.error('Login failed:', error);
