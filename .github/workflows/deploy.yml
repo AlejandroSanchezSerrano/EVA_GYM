@@ -13,14 +13,25 @@ jobs:
     - name: Obtener el código del repositorio
       uses: actions/checkout@v2
 
+    - name: Montamos Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18.19'
+
+    - name: Instalamos dependencias
+      run: npm install
+
+    - name: Construimos el proyecto
+      run: npm run build -- --base-href=https://alejandro.is-a.dev/evagym/
+
     - name: Subir archivos por FTP
       uses: SamKirkland/FTP-Deploy-Action@4.3.0
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: sancheza/evagym/
-        local-dir: ./
+        local-dir: dist/eva-gym/browser/
+        server-dir: /var/www/html/sancheza/evagym/
 
     - name: Cambiar permisos a 755 para archivos y carpetas
       uses: appleboy/ssh-action@v0.1.5
