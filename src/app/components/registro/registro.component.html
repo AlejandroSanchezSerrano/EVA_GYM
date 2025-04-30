@@ -4,7 +4,7 @@
       <div class="card shadow p-4 rounded-4 bg-dark text-white">
         <h2 class="text-center mb-4">Registro</h2>
 
-        <form (ngSubmit)="onSubmit()" #registerForm="ngForm" novalidate>
+        <form (ngSubmit)="onSubmit(registerForm)" #registerForm="ngForm" novalidate>
 
           <div class="row g-2 mb-3">
             <div class="col">
@@ -167,7 +167,7 @@
         </form>
 
         <div class="text-center mt-3">
-          <a (click)="irALogin()"style="cursor: pointer; color: #a2da5b; text-decoration: underline;">¿Ya tienes cuenta? Inicia Sesión</a>
+          <a (click)="irALogin()" style="cursor: pointer; color: #a2da5b; text-decoration: underline;">¿Ya tienes cuenta? Inicia Sesión</a>
         </div> 
       </div>
     </div>

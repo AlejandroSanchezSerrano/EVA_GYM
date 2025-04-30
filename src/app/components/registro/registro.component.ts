@@ -4,6 +4,7 @@ import { User } from '../../interfaces/user';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { NgForm, NgModel } from '@angular/forms';
 import Swal from 'sweetalert2'; 
 
 @Component({
@@ -25,7 +26,7 @@ export class RegisterComponent {
     passwd: ''
   };
 
-  constructor(private userService: UserService, private router: Router  ) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   calculateCalories(): void {
     let tmb: number;
@@ -52,8 +53,14 @@ export class RegisterComponent {
     }
   }
 
-  onSubmit(): void {
-    // Si pasa todas las validaciones
+  onSubmit(form: NgForm): void {
+    if (!form.valid) {
+      form.control.markAllAsTouched();
+  
+      Swal.fire("Campos incompletos", "Por favor, completa todos los campos correctamente.", "warning");
+      return;
+    }
+  
     this.calculateCalories();
   
     this.userService.createUser(this.user).subscribe(
@@ -68,6 +75,7 @@ export class RegisterComponent {
       }
     );
   }
+  
 
   irALogin() {
     this.router.navigate(['/login']);
