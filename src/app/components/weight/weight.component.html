@@ -12,7 +12,7 @@
 
     <h1 class="text-center text-white">Tu Progreso</h1>
 
-    <div class="container bg-dark-opacity" style="height: 300px;">
+    <div class="container bg-dark" style="height: 300px;">
       <canvas id="weightChart"></canvas>
     </div>
 
@@ -20,7 +20,7 @@
 
     <div *ngIf="weights.length > 0; else noWeights" class="row g-3">
       <div *ngFor="let w of weights" class="col-12 col-md-4 col-lg-2">
-        <div class="card h-100 shadow-sm bg-dark-opacity text-white">
+        <div class="card h-100 shadow-sm bg-dark text-white">
           <div class="card-body d-flex flex-column justify-content-between">
             <div class="mb-3">
               <h5 class="card-title">{{ w.weight }} kg</h5>

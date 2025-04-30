@@ -11,7 +11,7 @@
   color: white;
 }
 
-h1 {
+h1 label {
   color: #a877c8;
 }
 
@@ -42,4 +42,18 @@ strong {
 
 label:hover {
   cursor: pointer;
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  /* Tablets (pantallas medianas) */
+  .contenedor {
+    width: 50%;
+  }
+}
+
+@media (min-width: 992px) {
+  /* Desktops (pantallas grandes) */
+  .contenedor {
+    width: 50%;
+  }
 }
