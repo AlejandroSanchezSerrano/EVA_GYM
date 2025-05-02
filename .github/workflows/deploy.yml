@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Build Angular app
-        run: npm run build -- --base-href=https://alejandro.is-a.dev/evagym/
+        run: npm run build -- --base-href=https://alejandro.is-a.dev/eva_gym/
 
       - name: Clone external repo
         run: |
@@ -32,7 +32,7 @@ jobs:
         run: |
           rm -rf external-repo/eva_gym
           mkdir -p external-repo/eva_gym
-          cp -r dist/* external-repo/eva_gym/
+          cp -r dist/browser/* external-repo/eva_gym/
 
       - name: Commit and push changes
         run: |
