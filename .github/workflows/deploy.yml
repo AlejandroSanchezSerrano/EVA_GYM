@@ -1,4 +1,4 @@
-name: Subida automática a RUIX | EVA GYM
+name: Deploy EVAGYM to External Repo
 
 on:
   push:
@@ -6,40 +6,39 @@ on:
       - main
 
 jobs:
-  despliegue-por-ftp:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Obtener el código del repositorio
-      uses: actions/checkout@v2
+      - name: Checkout current repo
+        uses: actions/checkout@v3
 
-    - name: Montamos Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '18.19'
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
 
-    - name: Instalamos dependencias
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Construimos el proyecto
-      run: npm run build -- --base-href=https://alejandro.is-a.dev/eva_gym/
+      - name: Build Angular app
+        run: npm run build -- --base-href=https://alejandro.is-a.dev/evagym/
 
-    - name: Subir archivos por FTP
-      uses: SamKirkland/FTP-Deploy-Action@4.3.0
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: dist/eva-gym/browser/
-        server-dir: /var/www/html/sancheza/eva_gym/
-        dangerous-clean-slate: true
+      - name: Clone external repo
+        run: |
+          git clone https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/AlejandroSanchezSerrano/alejandro.git external-repo
+          
+      - name: Copy build output to external repo
+        run: |
+          rm -rf external-repo/eva_gym
+          mkdir -p external-repo/eva_gym
+          cp -r dist/* external-repo/eva_gym/
 
-    - name: Cambiar permisos a 755 para archivos y carpetas
-      uses: appleboy/ssh-action@v0.1.5
-      with:
-        host: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        script: |
-            find sancheza/evagym -type f -exec chmod 755 {} \;
-            find sancheza/evagym -type d -exec chmod 755 {} \;
+      - name: Commit and push changes
+        run: |
+          cd external-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "EVAGYM DESPLEGADO" || echo "No changes to commit"
+          git push
