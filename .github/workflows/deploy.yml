@@ -32,7 +32,7 @@ jobs:
         run: |
           rm -rf external-repo/eva_gym
           mkdir -p external-repo/eva_gym
-          cp -r dist/browser/* external-repo/eva_gym/
+          cp -r dist/eva-gym/browser/* external-repo/eva_gym/
 
       - name: Commit and push changes
         run: |
