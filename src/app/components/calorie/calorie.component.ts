@@ -50,11 +50,16 @@ export class CalorieComponent implements OnInit {
       next: (response) => {
         if (Array.isArray(response)) {
           this.calories = response;
-
+  
           const fechaHoy = new Date().toISOString().substring(0, 10);
-          this.caloriasHoy = this.calories
+          const caloriasHoyCalculadas = this.calories
             .filter(c => c.date === fechaHoy)
             .reduce((sum, c) => sum + Number(c.calories_consumed), 0);
+  
+          // Aseguramos actualización explícita
+          setTimeout(() => {
+            this.caloriasHoy = caloriasHoyCalculadas;
+          });
         } else {
           console.error('Error inesperado al cargar las calorías:', response);
         }
@@ -64,13 +69,17 @@ export class CalorieComponent implements OnInit {
       }
     });
   }
-
-  getEstadoClase(): string {
-    if (this.dailyCaloriasObjetivo === 0) return '';
-    return this.caloriasHoy >= this.dailyCaloriasObjetivo
-      ? 'bg-success text-white p-2 rounded'
-      : 'bg-error text-white p-2 rounded';
+  
+  getCardClase(c: any): string {
+    if (this.dailyCaloriasObjetivo === 0) return 'bg-dark border border-secondary';
+  
+    const ratio = c.calories_consumed / this.dailyCaloriasObjetivo;
+  
+    return ratio <= 1
+      ? 'bg-dark border border-2 border-success'
+      : 'bg-dark border border-2 border-danger';
   }
+  
 
   addCalorie(): void {
     Swal.fire({
@@ -169,4 +178,19 @@ export class CalorieComponent implements OnInit {
       }
     });
   }
+
+  mostrarInfo(): void {
+    Swal.fire({
+      icon: 'info',
+      title: 'Información de colores',
+      html: `
+        <div class="text-start">
+          <p><i class="bi bi-square-fill text-success"></i> <strong>Verde:</strong> Consumo dentro del objetivo.</p>
+          <p><i class="bi bi-square-fill text-danger"></i> <strong>Rojo:</strong> Objetivo de calorías superado.</p>
+        </div>
+      `,
+      confirmButtonText: 'Entendido'
+    });
+  }
+  
 }

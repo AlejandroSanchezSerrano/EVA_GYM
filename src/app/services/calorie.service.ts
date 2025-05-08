@@ -6,13 +6,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CalorieService {
-  private apiUrl = 'https://ruizgijon.ddns.net/sancheza/evagym/controller/calorie_controller.php';
-  private userApiUrl = 'https://ruizgijon.ddns.net/sancheza/evagym/controller/update_user.php';
+  private calorieApiUrl = 'https://ruizgijon.ddns.net/sancheza/evagym/controller/calorie_controller.php';
+  private userApiUrl = 'https://ruizgijon.ddns.net/sancheza/evagym/controller/user_controller.php';
 
   constructor(private http: HttpClient) {}
 
   createCalorie(user_id: number, calories_consumed: number, date: string): Observable<any> {
-    return this.http.post(this.apiUrl, {
+    return this.http.post(this.calorieApiUrl, {
       action: 'create',
       user_id,
       calories_consumed,
@@ -21,7 +21,7 @@ export class CalorieService {
   }
 
   updateCalorie(id: number, calories_consumed: number, date: string): Observable<any> {
-    return this.http.post(this.apiUrl, {
+    return this.http.post(this.calorieApiUrl, {
       action: 'update',
       id,
       calories_consumed,
@@ -30,22 +30,23 @@ export class CalorieService {
   }
 
   deleteCalorie(id: number): Observable<any> {
-    return this.http.post(this.apiUrl, {
+    return this.http.post(this.calorieApiUrl, {
       action: 'delete',
       id
     });
   }
 
   getCaloriesByUser(user_id: number): Observable<any> {
-    return this.http.post(this.apiUrl, {
+    return this.http.post(this.calorieApiUrl, {
       action: 'getByUserId',
       user_id
     });
   }
 
   getDailyCalories(user_id: number): Observable<any> {
-    return this.http.put(this.userApiUrl, {
-      id: user_id
+    return this.http.post(this.userApiUrl, {
+      action: 'getDailyCalories',
+      user_id
     });
   }
 }
