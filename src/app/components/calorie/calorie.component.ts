@@ -187,7 +187,7 @@ export class CalorieComponent implements OnInit {
         <div class="text-start">
           <p>Solo se puede realizar un registro de consumo por día (se puede modificar y ir sumando lo que vas consumiendo durante el dia)</p>
           <p><i class="bi bi-square-fill text-success"></i> <strong>Verde:</strong> Consumo dentro del objetivo.</p>
-          <p><i class="bi bi-square-fill text-danger"></i> <strong>Rojo:</strong> Objetivo de calorías superado.</p>
+          <p><i class="bi bi-square-fill text-danger"></i> <strong>Rojo:</strong> Consumo fuera del objetivo.</p>
         </div>
       `,
       confirmButtonText: 'Entendido'
