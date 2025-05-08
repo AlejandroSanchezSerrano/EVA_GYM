@@ -8,6 +8,10 @@ header {
   background-color: black;
 }
 
+main {
+  min-height: 54vh;
+}
+
 .nav-link a {
   color: #a2da5b;
 }
