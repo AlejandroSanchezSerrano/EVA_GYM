@@ -1,39 +1,64 @@
 <div class="container">
   <div class="especial"></div>
 
-    <div *ngIf="user; else loadingOrError" class="bg-dark p-3 rounded contenedor mx-auto">
-      <h1 class="text-center">Perfil de <label>{{ user.name }}</label></h1>
-      <p><strong>Usuario:</strong> {{ user.name }}</p>
-      <p><strong>Edad:</strong> {{ user.age }} años</p>
-      <p><strong>Peso:</strong> {{ user.weight }} kg</p>
-      <p><strong>Altura:</strong> {{ user.height }} cm</p>
-      <p><strong>Género:</strong> {{ user.gender === 'male' ? 'Hombre' : 'Mujer' }}</p>
-      <hr>
-      <p><strong>Nivel de actividad:</strong> {{ actividad(user.activity_level) }}</p>
-      <p><strong>Objetivo:</strong> {{ user.goal === 'deficit' ? 'Déficit Calórico' : 'Superávit Calórico' }}</p>
-      <p><strong>Calorías diarias:</strong> {{ user.daily_calories }} kcal</p>
-      <p><strong>IMC:</strong> {{ IMC(user.weight, user.height) }}</p>
-      <p><strong>Porcentaje de grasa:</strong> {{ grasaCorporal(user.weight, user.height, user.age, user.gender) | number:'1.1-1' }}%</p>
-    </div>
-  
-    <ng-template #loadingOrError>
-      <div class="alert alert-info" *ngIf="!errorMessage">Cargando datos del usuario...</div>
-      <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
-    </ng-template>
+  <div *ngIf="user; else loadingOrError" class="bg-dark p-3 rounded contenedor mx-auto">
+    <h1 class="text-center">Perfil de <label>{{ user.name }}</label></h1>
+    <p><strong>Usuario:</strong> {{ user.name }}</p>
+    <p><strong>Edad:</strong> {{ user.age }} años</p>
+    <p><strong>Peso:</strong> {{ user.weight }} kg</p>
+    <p><strong>Altura:</strong> {{ user.height }} cm</p>
+    <p><strong>Género:</strong> {{ user.gender === 'male' ? 'Hombre' : 'Mujer' }}</p>
+    <hr>
+    <p><strong>Nivel de actividad:</strong> {{ actividad(user.activity_level) }}</p>
+    <p><strong>Objetivo:</strong> {{ user.goal === 'deficit' ? 'Déficit Calórico' : 'Superávit Calórico' }}</p>
+    <p><strong>Calorías diarias:</strong> {{ user.daily_calories }} kcal</p>
+    <p><strong>Porcentaje de grasa:</strong> {{ grasaCorporal(user.weight, user.height, user.age, user.gender) | number:'1.1-1' }}%</p>
 
-    <div class="d-flex justify-content-center">
-      <div (click)="editarPerfil()" class="btn boton mt-3 m-1">
-        <label><i class="bi bi-pencil-square"></i> Editar perfil</label>
+    <p>
+      <strong>IMC:</strong>
+      {{
+        getIMCRango(calcularIMC(user.weight, user.height)).texto
+      }}
+    </p>
+
+    <div class="imc-bar mt-3">
+      <div
+        *ngFor="let s of segmentos"
+        class="text-center fs-7 segment"
+        [ngClass]="[s.cssClass, getIMCRango(calcularIMC(user.weight, user.height)).texto === s.texto ? 'activo' : '']"
+      >
+        {{ s.texto }}
       </div>
 
-      <div (click)="cerrarSesion()" class="btn btn-danger mt-3 m-1">
-        <i class="bi bi-box-arrow-left"></i> Cerrar sesión
-      </div>
-  
-      <div (click)="eliminarCuenta()" class="btn btn-danger mt-3 m-1">
-        <i class="bi bi-exclamation-triangle"></i> Eliminar cuenta
-      </div>
+      <div
+        class="marker"
+        [style.left.%]="getIMCPercent(user.weight, user.height)"
+      ></div>
     </div>
+  </div>
+
+  <ng-template #loadingOrError>
+    <div class="alert alert-info" *ngIf="!errorMessage">
+      Cargando datos del usuario...
+    </div>
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+  </ng-template>
+
+  <div class="d-flex justify-content-center">
+    <div (click)="editarPerfil()" class="btn boton mt-3 m-1">
+      <label><i class="bi bi-pencil-square"></i> Editar perfil</label>
+    </div>
+
+    <div (click)="cerrarSesion()" class="btn btn-danger mt-3 m-1">
+      <i class="bi bi-box-arrow-left"></i> Cerrar sesión
+    </div>
+
+    <div (click)="eliminarCuenta()" class="btn btn-danger mt-3 m-1">
+      <i class="bi bi-exclamation-triangle"></i> Eliminar cuenta
+    </div>
+  </div>
+
   <div class="especial"></div>
 </div>
-  

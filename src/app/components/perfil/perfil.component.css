@@ -47,6 +47,65 @@ hr {
   height: 2px;
   background-color: #a877c8;
 }
+.imc-bar {
+  position: relative;
+  display: flex;
+  height: 15px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.segment {
+  height: 100%;
+  font-size: 10px;
+  text-align: center;
+  line-height: 15px;
+  color: white;
+  white-space: nowrap;
+}
+
+/* Anchos proporcionales reales según los rangos */
+.bajo {
+  background: #4da6ff;
+  width: 24%;
+}
+.normal {
+  background: #28a745;
+  width: 18%;
+}
+.sobrepeso {
+  background: #ffc107;
+  width: 14%;
+}
+.obesidad1 {
+  background: #fd7e14;
+  width: 14%;
+}
+.obesidad2 {
+  background: #dc3545;
+  width: 14%;
+}
+.obesidad3 {
+  background: #390107;
+  width: 16%;
+}
+
+.marker {
+  position: absolute;
+  top: -5px;
+  width: 2px;
+  height: 30px;
+  background: black;
+}
+
+
+.fs-7 {
+  font-size: 10px;
+}
 
 @media (min-width: 768px) and (max-width: 991.98px) {
   /* Tablets (pantallas medianas) */

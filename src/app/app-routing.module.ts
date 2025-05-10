@@ -9,6 +9,7 @@ import { EditComponent } from './components/edit/edit.component';
 import { AcercaComponent } from './components/acerca/acerca.component';
 import { WeightComponent } from './components/weight/weight.component';
 import { CalorieComponent } from './components/calorie/calorie.component';
+import { TrainingComponent } from './components/training/training.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/inicio', pathMatch: 'full' },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'acerca', component: AcercaComponent },
   { path: 'peso', component: WeightComponent },
   { path: 'calorias', component: CalorieComponent },
+  { path: 'ejercicios', component: TrainingComponent },
   { path: '**', component: Error404Component }
 ];
 
