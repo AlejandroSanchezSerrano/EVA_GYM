@@ -142,7 +142,6 @@ export class TrainingComponent implements OnInit {
                 );
                 this.resetForm();
                 this.loadExerciseLogs(this.selectedExerciseId!);
-                window.location.reload();
               },
               error: () => {
                 Swal.fire(
@@ -259,7 +258,6 @@ export class TrainingComponent implements OnInit {
       weight: parseFloat(s.weight), // por si viene como string
     }));
     this.numSeries = this.seriesInputs.length;
-    this.router.navigate(['/ejercicios']);
   }
 
   resetForm(): void {
@@ -267,5 +265,6 @@ export class TrainingComponent implements OnInit {
     this.numSeries = 1;
     this.selectedExerciseId = null;
     this.editingLogId = null;
+    this.exerciseLogs = [];
   }
 }
