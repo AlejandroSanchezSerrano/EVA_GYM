@@ -18,47 +18,86 @@ export interface SeriesDetail {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TrainingService {
-
-  private apiUrl = 'https://ruizgijon.ddns.net/sancheza/evagym/controller'; 
+  private apiUrl = 'https://ruizgijon.ddns.net/sancheza/evagym/controller';
 
   constructor(private http: HttpClient) {}
 
-  /**
-   * Obtiene la lista de ejercicios disponibles
-   */
+  // 🏋️ Obtener ejercicios
   getExercises(): Observable<Exercise[]> {
     return this.http.get<Exercise[]>(`${this.apiUrl}/excercises.php`);
   }
 
-  /**
-   * Crea un registro de entrenamiento (log) para un usuario y ejercicio en una fecha
-   */
-  createExerciseLog(userId: number, exerciseId: number, date: string): Observable<ExerciseLogResponse> {
+  // 📝 Crear log de ejercicio
+  createExerciseLog(
+    userId: number,
+    exerciseId: number,
+    date: string
+  ): Observable<ExerciseLogResponse> {
     const payload = {
       user_id: userId,
       exercise_id: exerciseId,
-      date: date
+      date: date,
     };
-    return this.http.post<ExerciseLogResponse>(`${this.apiUrl}/create_exercise_log.php`, payload);
+    return this.http.post<ExerciseLogResponse>(
+      `${this.apiUrl}/create_exercise_log.php`,
+      payload
+    );
   }
 
-  /**
-   * Registra los detalles de las series (repeticiones y peso) para un log de ejercicio
-   */
-  createSeriesDetails(exerciseLogId: number, series: SeriesDetail[]): Observable<any> {
+  // ➕ Crear series para un log
+  createSeriesDetails(
+    exerciseLogId: number,
+    series: SeriesDetail[]
+  ): Observable<any> {
     const payload = {
       exercise_log_id: exerciseLogId,
-      series: series
+      series: series,
     };
-    return this.http.post<any>(`${this.apiUrl}/create_series_details.php`, payload);
+    return this.http.post<any>(
+      `${this.apiUrl}/create_series_details.php`,
+      payload
+    );
   }
-  
-  getExerciseLogs(userId: number, exerciseId: number): Observable<any[]> {
-  const params = { user_id: userId.toString(), exercise_id: exerciseId.toString() };
-  return this.http.get<any[]>(`${this.apiUrl}/get_exercise_logs.php`, { params });
-}
 
+  // 📜 Obtener historial de logs
+  getExerciseLogs(userId: number, exerciseId: number): Observable<any[]> {
+    if (userId == null || exerciseId == null) {
+      throw new Error('userId y exerciseId son obligatorios');
+    }
+
+    const params = {
+      user_id: userId.toString(),
+      exercise_id: exerciseId.toString(),
+    };
+
+    return this.http.get<any[]>(`${this.apiUrl}/get_exercise_logs.php`, {
+      params,
+    });
+  }
+
+  // ❌ Eliminar un log completo
+  deleteExerciseLog(logId: number): Observable<any> {
+    if (logId == null) {
+      throw new Error('logId es obligatorio');
+    }
+
+    return this.http.post<any>(`${this.apiUrl}/delete_exercise_log.php`, {
+      log_id: logId,
+    });
+  }
+
+  // 🔁 Eliminar series para editar (simulación de edición)
+  deleteSeriesDetails(exerciseLogId: number): Observable<any> {
+    if (exerciseLogId == null) {
+      throw new Error('exerciseLogId es obligatorio');
+    }
+
+    return this.http.post<any>(
+      `${this.apiUrl}/delete_series_details.php`,
+      { exercise_log_id: exerciseLogId }
+    );
+  }
 }

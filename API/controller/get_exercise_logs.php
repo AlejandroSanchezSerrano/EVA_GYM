@@ -57,6 +57,7 @@ try {
         $series = $seriesStmt->fetchAll(PDO::FETCH_ASSOC);
 
         $logs[] = [
+            "id" => $log_id,
             "date" => $row['date'],
             "series" => $series
         ];

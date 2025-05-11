@@ -78,28 +78,28 @@ export class TrainingComponent implements OnInit {
   }
 
   selectExercise(): void {
-  const inputOptions: Record<string, string> = {};
-  this.exercises.forEach((e) => (inputOptions[e.id] = e.name));
+    const inputOptions: Record<string, string> = {};
+    this.exercises.forEach((e) => (inputOptions[e.id] = e.name));
 
-  Swal.fire({
-    title: 'Elige un ejercicio',
-    input: 'select',
-    inputOptions: inputOptions,
-    inputPlaceholder: '-- Elegir --',
-    showCancelButton: true,
-    confirmButtonText: 'Seleccionar',
-  }).then((result) => {
-    if (result.isConfirmed && result.value) {
-      this.selectedExerciseId = parseInt(result.value, 10);
-      this.viewingHistory = false; // modo registro
-      this.seriesInputs = [{ repetitions: null, weight: null }];
-      this.numSeries = 1;
+    Swal.fire({
+      title: 'Elige un ejercicio',
+      input: 'select',
+      inputOptions: inputOptions,
+      inputPlaceholder: '-- Elegir --',
+      showCancelButton: true,
+      confirmButtonText: 'Seleccionar',
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        this.selectedExerciseId = parseInt(result.value, 10);
+        this.viewingHistory = false; // modo registro
+        this.seriesInputs = [{ repetitions: null, weight: null }];
+        this.numSeries = 1;
 
-      // 👉 cargar historial automáticamente
-      this.loadExerciseLogs(this.selectedExerciseId);
-    }
-  });
-}
+        // 👉 cargar historial automáticamente
+        this.loadExerciseLogs(this.selectedExerciseId);
+      }
+    });
+  }
 
   loadExerciseLogs(exerciseId: number): void {
     this.trainingService.getExerciseLogs(this.userId, exerciseId).subscribe({
@@ -122,55 +122,79 @@ export class TrainingComponent implements OnInit {
 
     this.loading = true;
 
-    const today = new Date().toISOString().split('T')[0];
+    const cleanedSeries: SeriesDetail[] = this.seriesInputs.map((s) => ({
+      repetitions: s.repetitions ?? 0,
+      weight: s.weight !== null && s.weight !== undefined ? s.weight : 0,
+    }));
 
-    this.trainingService
-      .createExerciseLog(this.userId, this.selectedExerciseId, today)
-      .subscribe({
-        next: (res) => {
-          const cleanedSeries: SeriesDetail[] = this.seriesInputs.map((s) => ({
-            repetitions: s.repetitions ?? 0,
-            weight:
-              s.weight !== null && s.weight !== undefined ? s.weight : 0,
-          }));
-
+    if (this.editingLogId) {
+      // 🔄 Actualizar las series: borrar y volver a insertar
+      this.trainingService.deleteSeriesDetails(this.editingLogId).subscribe({
+        next: () => {
           this.trainingService
-            .createSeriesDetails(res.exercise_log_id, cleanedSeries)
+            .createSeriesDetails(this.editingLogId!, cleanedSeries)
             .subscribe({
               next: () => {
-                Swal.fire({
-                  icon: 'success',
-                  title: '¡Éxito!',
-                  text: 'Entrenamiento registrado con éxito.',
-                  confirmButtonColor: '#3085d6',
-                });
-
-                this.seriesInputs = [{ repetitions: null, weight: null }];
-                this.numSeries = 1;
-                this.selectedExerciseId = null;
+                Swal.fire(
+                  'Actualizado',
+                  'Entrenamiento editado con éxito.',
+                  'success'
+                );
+                this.resetForm();
+                this.loadExerciseLogs(this.selectedExerciseId!);
+                window.location.reload();
               },
               error: () => {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Error',
-                  text: 'Error al guardar las series.',
-                  confirmButtonColor: '#d33',
-                });
-                this.loading = false;
+                Swal.fire(
+                  'Error',
+                  'No se pudieron actualizar las series.',
+                  'error'
+                );
               },
               complete: () => (this.loading = false),
             });
         },
         error: () => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Error al guardar el log de ejercicio.',
-            confirmButtonColor: '#d33',
-          });
+          Swal.fire('Error', 'No se pudo preparar la edición.', 'error');
           this.loading = false;
         },
       });
+    } else {
+      // ➕ Nuevo registro (igual que antes)
+      const today = new Date().toISOString().split('T')[0];
+      this.trainingService
+        .createExerciseLog(this.userId, this.selectedExerciseId, today)
+        .subscribe({
+          next: (res) => {
+            this.trainingService
+              .createSeriesDetails(res.exercise_log_id, cleanedSeries)
+              .subscribe({
+                next: () => {
+                  Swal.fire(
+                    '¡Éxito!',
+                    'Entrenamiento registrado con éxito.',
+                    'success'
+                  );
+                  this.resetForm();
+                  this.loadExerciseLogs(this.selectedExerciseId!);
+                },
+                error: () => {
+                  Swal.fire(
+                    'Error',
+                    'No se pudieron guardar las series.',
+                    'error'
+                  );
+                  this.loading = false;
+                },
+                complete: () => (this.loading = false),
+              });
+          },
+          error: () => {
+            Swal.fire('Error', 'No se pudo crear el log.', 'error');
+            this.loading = false;
+          },
+        });
+    }
   }
 
   getSelectedExerciseName(): string {
@@ -178,5 +202,70 @@ export class TrainingComponent implements OnInit {
       (e) => e.id === this.selectedExerciseId
     );
     return selected ? selected.name : '';
+  }
+
+  eliminarLog(log: any): void {
+    console.log('Log recibido:', log); // 👈 Mira qué ID tiene
+
+    const logId = log.id ?? log.exercise_log_id; // usa la que exista
+    if (!logId) {
+      console.error('No se encontró el ID del log.');
+      return;
+    }
+
+    Swal.fire({
+      icon: 'warning',
+      title: '¿Eliminar entrenamiento?',
+      text: 'Esta acción no se puede deshacer.',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#d33',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.trainingService.deleteExerciseLog(logId).subscribe({
+          next: (res) => {
+            if (res.success) {
+              Swal.fire(
+                'Eliminado',
+                'El entrenamiento ha sido eliminado.',
+                'success'
+              );
+              this.loadExerciseLogs(this.selectedExerciseId!);
+            } else {
+              Swal.fire(
+                'Error',
+                res.message || 'No se pudo eliminar.',
+                'error'
+              );
+            }
+          },
+          error: () => {
+            Swal.fire('Error', 'No se pudo conectar con el servidor.', 'error');
+          },
+        });
+      }
+    });
+  }
+
+  editingLogId: number | null = null; // 🆕 para saber si estamos editando
+
+  editarLog(log: any): void {
+    this.editingLogId = log.id;
+    this.viewingHistory = false; // cambia a modo edición
+    this.selectedExerciseId = this.selectedExerciseId; // ya debe estar activo
+    this.seriesInputs = log.series.map((s: any) => ({
+      repetitions: s.repetitions,
+      weight: parseFloat(s.weight), // por si viene como string
+    }));
+    this.numSeries = this.seriesInputs.length;
+    this.router.navigate(['/ejercicios']);
+  }
+
+  resetForm(): void {
+    this.seriesInputs = [{ repetitions: null, weight: null }];
+    this.numSeries = 1;
+    this.selectedExerciseId = null;
+    this.editingLogId = null;
   }
 }
