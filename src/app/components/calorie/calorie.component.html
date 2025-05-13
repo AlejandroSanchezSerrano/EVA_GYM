@@ -42,13 +42,14 @@
     </div>
   </div>
   
-  <ng-template #noAccess>
-    <div class="container py-5 text-center text-white">
-      <h1 class="mb-4">Acceso Denegado</h1>
-      <p>Debes iniciar sesión para ver esta página.</p>
-      <a (click)="irALogin()" class="btn boton mt-3">
-        <label style="cursor: pointer;">Iniciar Sesión</label>
-      </a>
-    </div>
-  </ng-template>
+<!-- Si no hay sesión -->
+<ng-template #noAccess>
+  <div class="container py-5 text-center text-white">
+    <h1 class="mb-4">Acceso Denegado</h1>
+    <p>Debes iniciar sesión para ver esta página.</p>
+    <a (click)="irALogin()" class="btn boton mt-3">
+      <label style="cursor: pointer">Iniciar Sesión</label>
+    </a>
+  </div>
+</ng-template>
   
