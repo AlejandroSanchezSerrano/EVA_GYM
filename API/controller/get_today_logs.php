@@ -32,10 +32,13 @@ if (!$user_id || !$date) {
 }
 
 try {
-    // Obtener logs del día
-    $query = "SELECT id, exercise_id, date FROM exercise_logs 
-              WHERE user_id = :user_id AND date = :date
-              ORDER BY id DESC";
+    // Obtener logs del día con nombre del ejercicio
+    $query = "SELECT el.id, el.exercise_id, el.date, ex.name AS exercise_name
+              FROM exercise_logs el
+              JOIN exercises ex ON el.exercise_id = ex.id
+              WHERE el.user_id = :user_id AND el.date = :date
+              ORDER BY el.id DESC";
+    
     $stmt = $db->prepare($query);
     $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
     $stmt->bindParam(":date", $date, PDO::PARAM_STR);
@@ -59,6 +62,7 @@ try {
         $logs[] = [
             "id" => $log_id,
             "exercise_id" => $row['exercise_id'],
+            "exercise_name" => $row['exercise_name'],
             "date" => $row['date'],
             "series" => $series
         ];
@@ -71,4 +75,3 @@ try {
     http_response_code(500);
     echo json_encode(["message" => "Error en el servidor: " . $e->getMessage()]);
 }
-?>
