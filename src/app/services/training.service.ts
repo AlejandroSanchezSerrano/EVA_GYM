@@ -95,9 +95,18 @@ export class TrainingService {
       throw new Error('exerciseLogId es obligatorio');
     }
 
-    return this.http.post<any>(
-      `${this.apiUrl}/delete_series_details.php`,
-      { exercise_log_id: exerciseLogId }
-    );
+    return this.http.post<any>(`${this.apiUrl}/delete_series_details.php`, {
+      exercise_log_id: exerciseLogId,
+    });
+  }
+
+  // 📅 Obtener logs de todos los ejercicios de un día
+  getTodayLogs(userId: number, date: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/get_today_logs.php`, {
+      params: {
+        user_id: userId.toString(),
+        date: date,
+      },
+    });
   }
 }

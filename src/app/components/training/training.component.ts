@@ -28,7 +28,12 @@ export class TrainingComponent implements OnInit {
   loading = false;
   viewingHistory = false;
 
+  editingLogId: number | null = null;
+
   exerciseLogs: {
+    id?: number;
+    exercise_id?: number;
+    exercise_name?: string;
     date: string;
     series: { repetitions: number; weight: number }[];
   }[] = [];
@@ -64,6 +69,9 @@ export class TrainingComponent implements OnInit {
     });
 
     this.seriesInputs = [{ repetitions: null, weight: null }];
+
+    // Cargar los logs del día por defecto
+    this.loadTodayLogs();
   }
 
   irALogin(): void {
@@ -91,11 +99,9 @@ export class TrainingComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed && result.value) {
         this.selectedExerciseId = parseInt(result.value, 10);
-        this.viewingHistory = false; // modo registro
+        this.viewingHistory = false;
         this.seriesInputs = [{ repetitions: null, weight: null }];
         this.numSeries = 1;
-
-        // 👉 cargar historial automáticamente
         this.loadExerciseLogs(this.selectedExerciseId);
       }
     });
@@ -117,6 +123,23 @@ export class TrainingComponent implements OnInit {
     });
   }
 
+  loadTodayLogs(): void {
+    const today = new Date().toISOString().split('T')[0];
+    this.trainingService.getTodayLogs(this.userId, today).subscribe({
+      next: (data) => {
+        this.exerciseLogs = data.sort((a, b) => b.date.localeCompare(a.date));
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudieron cargar los entrenamientos de hoy.',
+        });
+        this.exerciseLogs = [];
+      },
+    });
+  }
+
   submitTraining(): void {
     if (!this.selectedExerciseId || !this.seriesInputs.length) return;
 
@@ -128,7 +151,6 @@ export class TrainingComponent implements OnInit {
     }));
 
     if (this.editingLogId) {
-      // 🔄 Actualizar las series: borrar y volver a insertar
       this.trainingService.deleteSeriesDetails(this.editingLogId).subscribe({
         next: () => {
           this.trainingService
@@ -159,7 +181,6 @@ export class TrainingComponent implements OnInit {
         },
       });
     } else {
-      // ➕ Nuevo registro (igual que antes)
       const today = new Date().toISOString().split('T')[0];
       this.trainingService
         .createExerciseLog(this.userId, this.selectedExerciseId, today)
@@ -175,7 +196,7 @@ export class TrainingComponent implements OnInit {
                     'success'
                   );
                   this.resetForm();
-                  this.loadExerciseLogs(this.selectedExerciseId!);
+                  this.loadTodayLogs();
                 },
                 error: () => {
                   Swal.fire(
@@ -204,9 +225,7 @@ export class TrainingComponent implements OnInit {
   }
 
   eliminarLog(log: any): void {
-    console.log('Log recibido:', log); // 👈 Mira qué ID tiene
-
-    const logId = log.id ?? log.exercise_log_id; // usa la que exista
+    const logId = log.id ?? log.exercise_log_id;
     if (!logId) {
       console.error('No se encontró el ID del log.');
       return;
@@ -230,7 +249,11 @@ export class TrainingComponent implements OnInit {
                 'El entrenamiento ha sido eliminado.',
                 'success'
               );
-              this.loadExerciseLogs(this.selectedExerciseId!);
+              if (this.selectedExerciseId) {
+                this.loadExerciseLogs(this.selectedExerciseId);
+              } else {
+                this.loadTodayLogs();
+              }
             } else {
               Swal.fire(
                 'Error',
@@ -247,15 +270,13 @@ export class TrainingComponent implements OnInit {
     });
   }
 
-  editingLogId: number | null = null; // 🆕 para saber si estamos editando
-
   editarLog(log: any): void {
     this.editingLogId = log.id;
-    this.viewingHistory = false; // cambia a modo edición
-    this.selectedExerciseId = this.selectedExerciseId; // ya debe estar activo
+    this.viewingHistory = false;
+    this.selectedExerciseId = this.selectedExerciseId;
     this.seriesInputs = log.series.map((s: any) => ({
       repetitions: s.repetitions,
-      weight: parseFloat(s.weight), // por si viene como string
+      weight: parseFloat(s.weight),
     }));
     this.numSeries = this.seriesInputs.length;
   }
