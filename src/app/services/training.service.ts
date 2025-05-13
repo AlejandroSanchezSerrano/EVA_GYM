@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 export interface Exercise {
   id: number;
   name: string;
+  group: string;
 }
 
 export interface ExerciseLogResponse {

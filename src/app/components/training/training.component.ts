@@ -86,26 +86,49 @@ export class TrainingComponent implements OnInit {
   }
 
   selectExercise(): void {
-    const inputOptions: Record<string, string> = {};
-    this.exercises.forEach((e) => (inputOptions[e.id] = e.name));
+  // Agrupar ejercicios por grupo muscular
+  const groups = Array.from(new Set(this.exercises.map(e => e.group)));
 
-    Swal.fire({
-      title: 'Elige un ejercicio',
-      input: 'select',
-      inputOptions: inputOptions,
-      inputPlaceholder: '-- Elegir --',
-      showCancelButton: true,
-      confirmButtonText: 'Seleccionar',
-    }).then((result) => {
-      if (result.isConfirmed && result.value) {
-        this.selectedExerciseId = parseInt(result.value, 10);
-        this.viewingHistory = false;
-        this.seriesInputs = [{ repetitions: null, weight: null }];
-        this.numSeries = 1;
-        this.loadExerciseLogs(this.selectedExerciseId);
-      }
-    });
-  }
+  Swal.fire({
+    title: 'Selecciona un grupo muscular',
+    input: 'select',
+    inputOptions: groups.reduce((acc, group) => {
+      acc[group] = group;
+      return acc;
+    }, {} as Record<string, string>),
+    inputPlaceholder: '-- Elegir grupo --',
+    showCancelButton: true,
+    confirmButtonText: 'Siguiente',
+  }).then((groupResult) => {
+    if (groupResult.isConfirmed && groupResult.value) {
+      const selectedGroup = groupResult.value;
+      const filteredExercises = this.exercises.filter(e => e.group === selectedGroup);
+
+      const exerciseOptions: Record<string, string> = {};
+      filteredExercises.forEach((e) => {
+        exerciseOptions[e.id] = e.name;
+      });
+
+      Swal.fire({
+        title: 'Selecciona un ejercicio',
+        input: 'select',
+        inputOptions: exerciseOptions,
+        inputPlaceholder: '-- Elegir ejercicio --',
+        showCancelButton: true,
+        confirmButtonText: 'Seleccionar',
+      }).then((exerciseResult) => {
+        if (exerciseResult.isConfirmed && exerciseResult.value) {
+          this.selectedExerciseId = parseInt(exerciseResult.value, 10);
+          this.viewingHistory = false;
+          this.seriesInputs = [{ repetitions: null, weight: null }];
+          this.numSeries = 1;
+          this.loadExerciseLogs(this.selectedExerciseId);
+        }
+      });
+    }
+  });
+}
+
 
   loadExerciseLogs(exerciseId: number): void {
     this.trainingService.getExerciseLogs(this.userId, exerciseId).subscribe({
