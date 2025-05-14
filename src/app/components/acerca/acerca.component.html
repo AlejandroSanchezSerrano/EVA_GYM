@@ -70,7 +70,7 @@
         <ul class="list-group">
           <li *ngFor="let commit of commits" class="list-group-item d-flex justify-content-between align-items-start bg-transparent text-white border-0">
             <div class="ms-2 me-auto">
-              {{ commit.commit.message }}
+              <a [href]="commit.html_url" target="_blank">{{ commit.commit.message }}</a>
             </div>
             <span class="badge rounded-pill" style="background-color: #a877c8;">
               {{ commit.commit.author.date | date:'dd/MM/yyyy' }}

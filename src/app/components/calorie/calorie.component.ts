@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './calorie.component.html',
   styleUrls: ['./calorie.component.css'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule],
 })
 export class CalorieComponent implements OnInit {
   calories: any[] = [];
@@ -36,7 +36,7 @@ export class CalorieComponent implements OnInit {
         error: (err) => {
           console.error('Error al obtener calorías objetivo:', err);
           this.loadCalories(); // sigue aunque falle
-        }
+        },
       });
     }
   }
@@ -50,12 +50,12 @@ export class CalorieComponent implements OnInit {
       next: (response) => {
         if (Array.isArray(response)) {
           this.calories = response;
-  
+
           const fechaHoy = new Date().toISOString().substring(0, 10);
           const caloriasHoyCalculadas = this.calories
-            .filter(c => c.date === fechaHoy)
+            .filter((c) => c.date === fechaHoy)
             .reduce((sum, c) => sum + Number(c.calories_consumed), 0);
-  
+
           // Aseguramos actualización explícita
           setTimeout(() => {
             this.caloriasHoy = caloriasHoyCalculadas;
@@ -66,20 +66,20 @@ export class CalorieComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error al cargar calorías:', error);
-      }
+      },
     });
   }
-  
+
   getCardClase(c: any): string {
-    if (this.dailyCaloriasObjetivo === 0) return 'bg-dark border border-secondary';
-  
+    if (this.dailyCaloriasObjetivo === 0)
+      return 'bg-dark border border-secondary';
+
     const ratio = c.calories_consumed / this.dailyCaloriasObjetivo;
-  
+
     return ratio <= 1
       ? 'bg-dark border border-2 border-success'
       : 'bg-dark border border-2 border-danger';
   }
-  
 
   addCalorie(): void {
     Swal.fire({
@@ -88,7 +88,7 @@ export class CalorieComponent implements OnInit {
       inputLabel: 'Introduce las calorías consumidas',
       inputAttributes: {
         step: '1',
-        min: '0'
+        min: '0',
       },
       showCancelButton: true,
       confirmButtonText: 'Guardar',
@@ -98,20 +98,32 @@ export class CalorieComponent implements OnInit {
           return 'Introduce un valor válido';
         }
         return null;
-      }
-    }).then(result => {
+      },
+    }).then((result) => {
       if (result.isConfirmed && result.value) {
         const calorias = parseInt(result.value, 10);
         const fechaActual = new Date().toISOString().substring(0, 10);
 
-        this.calorieService.createCalorie(this.userId, calorias, fechaActual)
-          .subscribe(() => {
-            this.loadCalories();
-            Swal.fire({
-              icon: 'success',
-              title: 'Registro guardado',
-              text: 'Las calorías han sido registradas correctamente.'
-            });
+        this.calorieService
+          .createCalorie(this.userId, calorias, fechaActual)
+          .subscribe({
+            next: () => {
+              this.loadCalories();
+              Swal.fire({
+                icon: 'success',
+                title: 'Registro guardado',
+                text: 'Las calorías han sido registradas correctamente.',
+              });
+            },
+            error: (err) => {
+              // Mostrar alerta si ya existe un registro
+              Swal.fire({
+                icon: 'warning',
+                title: 'Ya has registrado calorías hoy',
+                text: 'Solo puedes registrar un consumo por día. Puedes editar el registro existente si lo necesitas.',
+              });
+              console.error('Error al guardar calorías:', err);
+            },
           });
       }
     });
@@ -125,7 +137,7 @@ export class CalorieComponent implements OnInit {
       inputValue: calorie.calories_consumed,
       inputAttributes: {
         step: '1',
-        min: '0'
+        min: '0',
       },
       showCancelButton: true,
       confirmButtonText: 'Actualizar',
@@ -135,19 +147,20 @@ export class CalorieComponent implements OnInit {
           return 'Introduce un valor válido';
         }
         return null;
-      }
-    }).then(result => {
+      },
+    }).then((result) => {
       if (result.isConfirmed && result.value) {
         const nuevasCalorias = parseInt(result.value, 10);
         const fechaActual = new Date().toISOString().substring(0, 10);
 
-        this.calorieService.updateCalorie(calorie.id, nuevasCalorias, fechaActual)
+        this.calorieService
+          .updateCalorie(calorie.id, nuevasCalorias, fechaActual)
           .subscribe(() => {
             this.loadCalories();
             Swal.fire({
               icon: 'success',
               title: 'Calorías actualizadas',
-              text: 'El registro ha sido actualizado correctamente.'
+              text: 'El registro ha sido actualizado correctamente.',
             });
           });
       }
@@ -163,18 +176,17 @@ export class CalorieComponent implements OnInit {
       confirmButtonColor: '#d33',
       cancelButtonColor: '#6c757d',
       confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.calorieService.deleteCalorie(calorieId)
-          .subscribe(() => {
-            this.loadCalories();
-            Swal.fire({
-              icon: 'success',
-              title: 'Eliminado',
-              text: 'El registro ha sido eliminado correctamente.'
-            });
+        this.calorieService.deleteCalorie(calorieId).subscribe(() => {
+          this.loadCalories();
+          Swal.fire({
+            icon: 'success',
+            title: 'Eliminado',
+            text: 'El registro ha sido eliminado correctamente.',
           });
+        });
       }
     });
   }
@@ -190,8 +202,7 @@ export class CalorieComponent implements OnInit {
           <p><i class="bi bi-square-fill text-danger"></i> <strong>Rojo:</strong> Consumo fuera del objetivo.</p>
         </div>
       `,
-      confirmButtonText: 'Entendido'
+      confirmButtonText: 'Entendido',
     });
   }
-  
 }
