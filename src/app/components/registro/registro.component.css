@@ -23,3 +23,13 @@
 .boton:hover * {
   color: #a877c8;
 }
+
+.was-validated .form-control:invalid,
+.form-control.is-invalid {
+  border-color: #dc3545;
+}
+
+.was-validated .form-control:invalid ~ .invalid-feedback,
+.form-control.is-invalid ~ .invalid-feedback {
+  display: block;
+}
