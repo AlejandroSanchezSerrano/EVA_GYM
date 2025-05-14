@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2'; 
 
 @Component({
+  standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],

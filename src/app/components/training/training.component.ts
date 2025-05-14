@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 
 @Component({
+  standalone: true,
   selector: 'app-training',
   templateUrl: './training.component.html',
   styleUrls: ['./training.component.css'],
@@ -76,6 +77,10 @@ export class TrainingComponent implements OnInit {
 
   irALogin(): void {
     this.router.navigate(['/login']);
+  }
+
+  historial(): void {
+  this.router.navigate(['/history']);
   }
 
   onSeriesCountChange(): void {

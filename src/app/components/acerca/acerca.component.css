@@ -18,3 +18,16 @@
 .btn:hover a {
   color: #a877c8;
 }
+
+a {
+  color: #ffffff;
+  text-decoration: none;
+  display: inline-block; 
+  transition: transform 0.3s ease, color 0.1s ease;
+}
+
+a:hover {
+  color: #a2da5b;
+  transform: scale(1.04);
+}
+

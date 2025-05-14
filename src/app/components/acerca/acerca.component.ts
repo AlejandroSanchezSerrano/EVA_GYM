@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { GithubService } from '../../services/github.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
+  standalone: true,
   selector: 'app-acerca',
   templateUrl: './acerca.component.html',
   styleUrls: ['./acerca.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule, DatePipe]
 })
 export class AcercaComponent implements OnInit {
   commits: any[] = [];
