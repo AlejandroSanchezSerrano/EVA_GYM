@@ -8,6 +8,7 @@ import { NgForm, NgModel } from '@angular/forms';
 import Swal from 'sweetalert2';
 
 @Component({
+  standalone: true,
   selector: 'app-register',
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.css'],

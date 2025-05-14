@@ -170,6 +170,7 @@ export class PerfilComponent implements OnInit {
 
             this.userService.deleteUser(userId).subscribe({
               next: () => {
+                localStorage.clear();
                 Swal.fire('¡Eliminado!', 'Tu cuenta ha sido eliminada.', 'success').then(() => {
                   this.router.navigate(['/login']);
                 });
