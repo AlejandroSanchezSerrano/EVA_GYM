@@ -10,9 +10,9 @@
     </div>
 
     <!-- Mostrar ejercicio seleccionado -->
-    <p *ngIf="selectedExerciseId !== null" class="text-white text-center">
+    <!-- <p *ngIf="selectedExerciseId !== null" class="text-white text-center">
       <strong>Ejercicio seleccionado:</strong> {{ getSelectedExerciseName() }}
-    </p>
+    </p> -->
 
     <!-- Selector de número de series -->
     <div *ngIf="selectedExerciseId !== null" class="text-center mb-4">
@@ -73,6 +73,16 @@
       </div>
     </div>
 
+    <h1 class="text-center text-white m-4" *ngIf="selectedExerciseId && exerciseLogs.length">Tu Progreso en {{ getSelectedExerciseName() }}</h1>
+
+    <div
+      class="container bg-dark"
+      style="height: 300px"
+      *ngIf="selectedExerciseId && exerciseLogs.length"
+    >
+      <canvas id="exerciseChart"></canvas>
+    </div>
+
     <!-- Historial de logs (de hoy o del ejercicio seleccionado) -->
     <div class="mt-5 text-white">
       <h1 class="text-center">
@@ -84,8 +94,8 @@
       </h1>
       <div class="text-center m-4">
         <button (click)="historial()" class="btn boton text-center">
-        <label style="cursor: pointer">Ver Historial Detallado</label>
-      </button>
+          <label style="cursor: pointer">Ver Historial Detallado</label>
+        </button>
       </div>
       <div *ngIf="(exerciseLogs?.length ?? 0) > 0; else noLogs" class="row g-3">
         <div

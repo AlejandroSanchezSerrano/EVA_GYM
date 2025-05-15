@@ -8,6 +8,9 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Chart, registerables } from 'chart.js';
+
+Chart.register(...registerables);
 
 @Component({
   standalone: true,
@@ -38,6 +41,8 @@ export class TrainingComponent implements OnInit {
     date: string;
     series: { repetitions: number; weight: number }[];
   }[] = [];
+
+  chart: Chart | null = null;
 
   constructor(
     private trainingService: TrainingService,
@@ -70,8 +75,6 @@ export class TrainingComponent implements OnInit {
     });
 
     this.seriesInputs = [{ repetitions: null, weight: null }];
-
-    // Cargar los logs del día por defecto
     this.loadTodayLogs();
   }
 
@@ -80,7 +83,7 @@ export class TrainingComponent implements OnInit {
   }
 
   historial(): void {
-  this.router.navigate(['/history']);
+    this.router.navigate(['/history']);
   }
 
   onSeriesCountChange(): void {
@@ -91,54 +94,53 @@ export class TrainingComponent implements OnInit {
   }
 
   selectExercise(): void {
-  // Agrupar ejercicios por grupo muscular
-  const groups = Array.from(new Set(this.exercises.map(e => e.group)));
+    const groups = Array.from(new Set(this.exercises.map(e => e.group)));
 
-  Swal.fire({
-    title: 'Selecciona un grupo muscular',
-    input: 'select',
-    inputOptions: groups.reduce((acc, group) => {
-      acc[group] = group;
-      return acc;
-    }, {} as Record<string, string>),
-    inputPlaceholder: '-- Elegir grupo --',
-    showCancelButton: true,
-    confirmButtonText: 'Siguiente',
-  }).then((groupResult) => {
-    if (groupResult.isConfirmed && groupResult.value) {
-      const selectedGroup = groupResult.value;
-      const filteredExercises = this.exercises.filter(e => e.group === selectedGroup);
+    Swal.fire({
+      title: 'Selecciona un grupo muscular',
+      input: 'select',
+      inputOptions: groups.reduce((acc, group) => {
+        acc[group] = group;
+        return acc;
+      }, {} as Record<string, string>),
+      inputPlaceholder: '-- Elegir grupo --',
+      showCancelButton: true,
+      confirmButtonText: 'Siguiente',
+    }).then((groupResult) => {
+      if (groupResult.isConfirmed && groupResult.value) {
+        const selectedGroup = groupResult.value;
+        const filteredExercises = this.exercises.filter(e => e.group === selectedGroup);
 
-      const exerciseOptions: Record<string, string> = {};
-      filteredExercises.forEach((e) => {
-        exerciseOptions[e.id] = e.name;
-      });
+        const exerciseOptions: Record<string, string> = {};
+        filteredExercises.forEach((e) => {
+          exerciseOptions[e.id] = e.name;
+        });
 
-      Swal.fire({
-        title: 'Selecciona un ejercicio',
-        input: 'select',
-        inputOptions: exerciseOptions,
-        inputPlaceholder: '-- Elegir ejercicio --',
-        showCancelButton: true,
-        confirmButtonText: 'Seleccionar',
-      }).then((exerciseResult) => {
-        if (exerciseResult.isConfirmed && exerciseResult.value) {
-          this.selectedExerciseId = parseInt(exerciseResult.value, 10);
-          this.viewingHistory = false;
-          this.seriesInputs = [{ repetitions: null, weight: null }];
-          this.numSeries = 1;
-          this.loadExerciseLogs(this.selectedExerciseId);
-        }
-      });
-    }
-  });
-}
-
+        Swal.fire({
+          title: 'Selecciona un ejercicio',
+          input: 'select',
+          inputOptions: exerciseOptions,
+          inputPlaceholder: '-- Elegir ejercicio --',
+          showCancelButton: true,
+          confirmButtonText: 'Seleccionar',
+        }).then((exerciseResult) => {
+          if (exerciseResult.isConfirmed && exerciseResult.value) {
+            this.selectedExerciseId = parseInt(exerciseResult.value, 10);
+            this.viewingHistory = false;
+            this.seriesInputs = [{ repetitions: null, weight: null }];
+            this.numSeries = 1;
+            this.loadExerciseLogs(this.selectedExerciseId);
+          }
+        });
+      }
+    });
+  }
 
   loadExerciseLogs(exerciseId: number): void {
     this.trainingService.getExerciseLogs(this.userId, exerciseId).subscribe({
       next: (data) => {
-        this.exerciseLogs = data.sort((a, b) => b.date.localeCompare(a.date));
+        this.exerciseLogs = data.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        this.updateExerciseChart();
       },
       error: () => {
         Swal.fire({
@@ -147,6 +149,7 @@ export class TrainingComponent implements OnInit {
           text: 'No se pudo cargar el historial de este ejercicio.',
         });
         this.exerciseLogs = [];
+        this.updateExerciseChart();
       },
     });
   }
@@ -155,7 +158,8 @@ export class TrainingComponent implements OnInit {
     const today = new Date().toISOString().split('T')[0];
     this.trainingService.getTodayLogs(this.userId, today).subscribe({
       next: (data) => {
-        this.exerciseLogs = data.sort((a, b) => b.date.localeCompare(a.date));
+        this.exerciseLogs = data.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        this.updateExerciseChart();
       },
       error: () => {
         Swal.fire({
@@ -164,7 +168,76 @@ export class TrainingComponent implements OnInit {
           text: 'No se pudieron cargar los entrenamientos de hoy.',
         });
         this.exerciseLogs = [];
+        this.updateExerciseChart();
       },
+    });
+  }
+
+  updateExerciseChart(): void {
+    if (this.chart) {
+      this.chart.destroy();
+    }
+
+    if (!this.exerciseLogs.length) return;
+
+    const labels: string[] = [];
+    const weights: number[] = [];
+    const repetitions: number[] = [];
+
+    this.exerciseLogs.forEach(log => {
+      log.series.forEach((serie, i) => {
+        const fecha = new Date(log.date).toLocaleDateString();
+        labels.push(`${fecha}`);  
+        weights.push(serie.weight);
+        repetitions.push(serie.repetitions);
+      });
+    });
+
+    const ctx = document.getElementById('exerciseChart') as HTMLCanvasElement;
+    if (!ctx) return;
+
+    this.chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Peso (kg)',
+            data: weights,
+            borderColor: 'rgba(135, 242, 87, 1)',
+            backgroundColor: 'rgba(135, 242, 87, 0.2)',
+            tension: 0.3,
+            fill: false
+          },
+          {
+            label: 'Repeticiones',
+            data: repetitions,
+            borderColor: 'rgba(132, 69, 190, 1)',
+            backgroundColor: 'rgba(132, 69, 190, 0.2)',
+            tension: 0.3,
+            fill: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Fecha'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Valor'
+            },
+            beginAtZero: true
+          }
+        }
+      }
     });
   }
 
@@ -185,20 +258,12 @@ export class TrainingComponent implements OnInit {
             .createSeriesDetails(this.editingLogId!, cleanedSeries)
             .subscribe({
               next: () => {
-                Swal.fire(
-                  'Actualizado',
-                  'Entrenamiento editado con éxito.',
-                  'success'
-                );
+                Swal.fire('Actualizado', 'Entrenamiento editado con éxito.', 'success');
                 this.resetForm();
                 this.loadExerciseLogs(this.selectedExerciseId!);
               },
               error: () => {
-                Swal.fire(
-                  'Error',
-                  'No se pudieron actualizar las series.',
-                  'error'
-                );
+                Swal.fire('Error', 'No se pudieron actualizar las series.', 'error');
               },
               complete: () => (this.loading = false),
             });
@@ -218,20 +283,12 @@ export class TrainingComponent implements OnInit {
               .createSeriesDetails(res.exercise_log_id, cleanedSeries)
               .subscribe({
                 next: () => {
-                  Swal.fire(
-                    '¡Éxito!',
-                    'Entrenamiento registrado con éxito.',
-                    'success'
-                  );
+                  Swal.fire('¡Éxito!', 'Entrenamiento registrado con éxito.', 'success');
                   this.resetForm();
                   this.loadTodayLogs();
                 },
                 error: () => {
-                  Swal.fire(
-                    'Error',
-                    'No se pudieron guardar las series.',
-                    'error'
-                  );
+                  Swal.fire('Error', 'No se pudieron guardar las series.', 'error');
                   this.loading = false;
                 },
                 complete: () => (this.loading = false),
@@ -272,22 +329,14 @@ export class TrainingComponent implements OnInit {
         this.trainingService.deleteExerciseLog(logId).subscribe({
           next: (res) => {
             if (res.success) {
-              Swal.fire(
-                'Eliminado',
-                'El entrenamiento ha sido eliminado.',
-                'success'
-              );
+              Swal.fire('Eliminado', 'El entrenamiento ha sido eliminado.', 'success');
               if (this.selectedExerciseId) {
                 this.loadExerciseLogs(this.selectedExerciseId);
               } else {
                 this.loadTodayLogs();
               }
             } else {
-              Swal.fire(
-                'Error',
-                res.message || 'No se pudo eliminar.',
-                'error'
-              );
+              Swal.fire('Error', res.message || 'No se pudo eliminar.', 'error');
             }
           },
           error: () => {
@@ -315,5 +364,9 @@ export class TrainingComponent implements OnInit {
     this.selectedExerciseId = null;
     this.editingLogId = null;
     this.exerciseLogs = [];
+    if (this.chart) {
+      this.chart.destroy();
+      this.chart = null;
+    }
   }
 }
