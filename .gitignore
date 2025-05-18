@@ -42,6 +42,3 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-
-# Evita subir claves
-/src/environments/environments.ts
