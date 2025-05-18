@@ -1,43 +1,132 @@
 .bg-dark-opacity {
-    background-color: rgba(0, 0, 0, 0.5); /* Negro con 70% de opacidad */
+  background-color: rgba(0, 0, 0, 0.5); /* Negro con 70% de opacidad */
+}
+
+.boton {
+  background-color: #a877c8;
+}
+
+.boton:hover {
+  background-color: #a2da5b;
+}
+
+.boton * {
+  color: #a2da5b;
+  font-weight: bold;
+}
+
+.boton:hover * {
+  color: #a877c8;
+}
+
+.bg-success {
+  background-color: #28a745; /* Verde Bootstrap */
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.4);
+}
+
+.bg-error {
+  background-color: #dc3545; /* Rojo Bootstrap */
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(220, 53, 69, 0.4);
+}
+
+.container {
+  border-radius: 1rem;
+  padding: 2rem;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+textarea {
+  resize: none;
+  border-radius: 0.75rem;
+  border: 1px solid #555;
+  background-color: #1c1c1c;
+  color: #fff;
+  padding: 1rem;
+  transition: border 0.3s ease;
+  max-width: 400px;
+
+  &:focus {
+    border-color: #a877c8;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(168, 119, 200, 0.3);
+    background-color: #1c1c1c;
+    color: white;
   }
-  
-  /* .btn {
-    width: 160px;
-  } */
-  
-  .boton {
+}
+
+button.btn {
+  font-weight: 500;
+  transition: all 0.2s ease;
+
+  &.boton {
     background-color: #a877c8;
+
+    &:hover {
+      background-color: #a2da5b;
+    }
+
+    * {
+      color: #a2da5b;
+      font-weight: bold;
+    }
+
+    &:hover * {
+      color: #a877c8;
+    }
   }
-  
-  .boton:hover {
-    background-color: #a2da5b;
-  }
-  
-  .boton * {
-    color: #a2da5b;
-    font-weight: bold;
-  }
-  
-  .boton:hover * {
+
+  &.btn-outline-primary {
+    border-color: #a877c8;
     color: #a877c8;
+
+    &:hover {
+      background-color: #a877c8;
+      color: white;
+    }
   }
-  
-  .bg-success {
-    background-color: #28a745; /* Verde Bootstrap */
+
+  &.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+
+    &:hover {
+      background-color: #dc3545;
+      color: white;
+    }
+  }
+
+  &.btn-secondary {
+    background-color: #a877c8;
     color: white;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: bold;
-    box-shadow: 0 0 10px rgba(40, 167, 69, 0.4);
+
+    &:hover {
+      background-color: #a2da5b;
+      color: #a877c8;
+    }
   }
-  
-  .bg-error {
-    background-color: #dc3545; /* Rojo Bootstrap */
-    color: white;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: bold;
-    box-shadow: 0 0 10px rgba(220, 53, 69, 0.4);
+}
+
+.text-muted {
+  opacity: 0.6;
+}
+
+i.bi-info-circle {
+  color: #a877c8;
+
+  &:hover {
+    opacity: 0.8;
   }
-  
+}

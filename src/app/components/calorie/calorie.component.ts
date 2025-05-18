@@ -3,13 +3,15 @@ import { CalorieService } from '../../services/calorie.service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { OpenaiService } from '../../services/openai.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-calorie',
   templateUrl: './calorie.component.html',
   styleUrls: ['./calorie.component.css'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
 })
 export class CalorieComponent implements OnInit {
   calories: any[] = [];
@@ -17,8 +19,13 @@ export class CalorieComponent implements OnInit {
   isLoggedIn: boolean = false;
   dailyCaloriasObjetivo: number = 0;
   caloriasHoy: number = 0;
+  comidaTexto: string = '';
 
-  constructor(private calorieService: CalorieService, private router: Router) {
+  constructor(
+    private calorieService: CalorieService,
+    private router: Router,
+    private openaiService: OpenaiService
+  ) {
     const storedUserId = localStorage.getItem('user_id');
     if (storedUserId) {
       this.userId = parseInt(storedUserId, 10);
@@ -204,5 +211,84 @@ export class CalorieComponent implements OnInit {
       `,
       confirmButtonText: 'Entendido',
     });
+  }
+
+  estimarCalorias() {
+    if (!this.comidaTexto.trim()) {
+      Swal.fire('Atención', 'Debes describir lo que comiste.', 'warning');
+      return;
+    }
+
+    Swal.fire({
+      title: 'Estimando...',
+      text: 'Por favor espera un momento',
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    this.openaiService.estimateCalories(this.comidaTexto).subscribe({
+      next: (res) => {
+        const respuestaIA = res.choices[0].message.content;
+        Swal.fire({
+          title: 'Resultado estimado',
+          html: `Calorías estimadas: <strong>${respuestaIA}</strong><br>¿Deseas usar este valor?`,
+          showCancelButton: true,
+          confirmButtonText: 'Usar valor',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            console.log('Respuesta IA:', respuestaIA);
+
+            let caloriasNum: number;
+
+            // Buscar línea que contenga "total" o "estimado"
+            const totalMatch = respuestaIA.match(/total.*?(\d+)/i);
+
+            if (totalMatch && totalMatch[1]) {
+              caloriasNum = parseInt(totalMatch[1], 10);
+            } else {
+              // Fallback: usar el último número del texto
+              const allMatches = respuestaIA.match(/\d+/g);
+              if (allMatches && allMatches.length > 0) {
+                caloriasNum = parseInt(allMatches[allMatches.length - 1], 10);
+              } else {
+                Swal.fire(
+                  'Error',
+                  'No se pudo interpretar la respuesta de la IA.',
+                  'error'
+                );
+                return;
+              }
+            }
+
+            this.agregarCaloriasDesdeIA(caloriasNum);
+          }
+        });
+      },
+      error: (err) => {
+        Swal.fire('Error', 'No se pudo obtener la estimación.', 'error');
+        console.error(err);
+      },
+    });
+  }
+
+  agregarCaloriasDesdeIA(kcal: number) {
+    const fechaActual = new Date().toISOString().substring(0, 10);
+
+    this.calorieService
+      .createCalorie(this.userId, kcal, fechaActual)
+      .subscribe({
+        next: () => {
+          this.loadCalories();
+          Swal.fire(
+            'Guardado',
+            'Las calorías han sido registradas.',
+            'success'
+          );
+        },
+        error: (err) => {
+          Swal.fire('Error', 'No se pudieron guardar las calorías.', 'error');
+          console.error(err);
+        },
+      });
   }
 }
