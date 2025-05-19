@@ -62,13 +62,22 @@
 
       <form (ngSubmit)="saveUser()">
         <div class="row g-3">
-          <div class="col-md-4">
+          <div class="col-md-2">
             <input
               type="text"
               class="form-control"
               [(ngModel)]="selectedUser.name"
               name="name"
               placeholder="Nombre"
+            />
+          </div>
+          <div class="col-md-2">
+            <input
+              type="password"
+              class="form-control"
+              [(ngModel)]="selectedUser.passwd"
+              name="passwd"
+              placeholder="Nueva contraseña"
             />
           </div>
           <div class="col-md-2">
