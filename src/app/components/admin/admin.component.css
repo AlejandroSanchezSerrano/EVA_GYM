@@ -14,6 +14,7 @@
 }
 
 input.form-control {
+  height: 50px;
   border-radius: 0.75rem;
   border: 1px solid #555;
   background-color: #1c1c1c;
@@ -34,6 +35,7 @@ select {
   background-color: #1c1c1c;
   color: white;
   border: 1px solid #555;
+  height: 50px;
 
   &:focus {
     border-color: #a877c8;

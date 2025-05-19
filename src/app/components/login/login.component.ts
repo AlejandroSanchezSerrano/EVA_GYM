@@ -20,8 +20,28 @@ export class LoginComponent {
   };
 
   errorMessage = '';
+  rememberMe = false;
 
   constructor(private userService: UserService, private router: Router, private authService: AuthService ) {}
+
+  ngOnInit(): void {
+    const remembered = this.getCookie('rememberedUser');
+    if (remembered) {
+      this.credentials.name = remembered;
+      this.rememberMe = true;
+    }
+  }
+
+  // Función auxiliar
+  getCookie(name: string): string | null {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return parts.pop()?.split(';').shift() || null;
+    }
+    return null;
+  }
+
 
   onSubmit(): void {
     this.userService.login(this.credentials).subscribe(
@@ -29,6 +49,17 @@ export class LoginComponent {
         console.log('Login successful:', response);
         localStorage.setItem('user_id', response.user_id);
         localStorage.setItem('user_name', response.name );
+
+        //Cookies
+        if (this.rememberMe) {
+          // Guardar cookie por 30 días
+          const days = 30;
+          const expires = new Date(Date.now() + days * 86400000).toUTCString();
+          document.cookie = `rememberedUser=${response.name}; expires=${expires}; path=/`;
+        } else {
+          // Eliminar la cookie si existía
+          document.cookie = 'rememberedUser=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+        }
 
         // Mostrar alerta de éxito
         Swal.fire({
