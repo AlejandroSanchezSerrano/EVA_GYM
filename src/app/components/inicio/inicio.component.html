@@ -1,22 +1,13 @@
-<div class="container">
-  <div class="especial"></div>
-  <!-- Hero Section -->
-  <div *ngIf="isUserLoggedIn" class="hero text-center bg-dark bg-opacity-50 text-white">
+<div class="hero-section-img text-center text-white">
+  <img src="https://res.cloudinary.com/drikoem6d/image/upload/HERO_s4ovhj.png" alt="Hero" class="hero-img">
+  <div class="hero-content">
     <h1 class="display-4">Bienvenido {{ user_name }}</h1>
-    <p class="lead">Supera tus límites. Activa el modo Berserk.</p>
-    <div class="btn">
-      <a (click)="irAAcercaDe()" class="text-decoration-none" style="cursor: pointer;">Acerca De</a>
-    </div> 
+    <p>Supera tus límites. Activa el modo Berserk.</p>
+    <button class="btn btn-primary" (click)="scrollToSection()">Saber más</button>
   </div>
+</div>
 
-  <!-- Carousel Section -->
-  <div id="evaGymCarousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active generi">
-        <img src="https://res.cloudinary.com/drikoem6d/image/upload/EVA_900_x_300_px_1800_x_600_px_fo088m.png" class="d-block w-100" alt="Progreso">
-      </div>
-    </div>
-  </div>
-
-  <div class="especial"></div>
+<!-- Sección destino del scroll -->
+<div id="contenidoPrincipal" class="container">
+  <!-- TUTORIALES PROXIMAMENTE  -->
 </div>

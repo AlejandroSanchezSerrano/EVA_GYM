@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Route, Router } from '@angular/router';
 
 @Component({
+  standalone: true,
   selector: 'app-inicio',
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css'],
@@ -23,4 +24,10 @@ export class InicioComponent implements OnInit {
   irAAcercaDe() {
     this.router.navigate(['/acerca']);
   }
+
+  scrollToSection() {
+  const section = document.getElementById('contenidoPrincipal');
+  section?.scrollIntoView({ behavior: 'smooth' });
+}
+
 }
