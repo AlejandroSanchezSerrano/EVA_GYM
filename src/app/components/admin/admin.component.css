@@ -1,0 +1,148 @@
+.card {
+  background-color: #1f1f1f;
+  border-radius: 1rem;
+  border: 1px solid #444;
+}
+
+.table-dark {
+  background-color: #1c1c1c;
+  color: #fff;
+  th,
+  td {
+    vertical-align: middle;
+  }
+}
+
+input.form-control {
+  border-radius: 0.75rem;
+  border: 1px solid #555;
+  background-color: #1c1c1c;
+  color: #fff;
+  padding: 0.75rem;
+
+  &:focus {
+    border-color: #a877c8;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(168, 119, 200, 0.3);
+    background-color: #1c1c1c;
+    color: white;
+  }
+}
+
+select {
+  border-radius: 0.75rem;
+  background-color: #1c1c1c;
+  color: white;
+  border: 1px solid #555;
+
+  &:focus {
+    border-color: #a877c8;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(168, 119, 200, 0.3);
+    background-color: #1c1c1c;
+    color: white;
+  }
+}
+
+button.btn {
+  font-weight: 500;
+  transition: all 0.2s ease;
+
+  &.boton {
+    background-color: #a877c8;
+
+    &:hover {
+      background-color: #a2da5b;
+    }
+
+    * {
+      color: #a2da5b;
+      font-weight: bold;
+    }
+
+    &:hover * {
+      color: #a877c8;
+    }
+  }
+
+  &.btn-outline-primary {
+    border-color: #a877c8;
+    color: #a877c8;
+
+    &:hover {
+      background-color: #a877c8;
+      color: white;
+    }
+  }
+
+  &.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+
+    &:hover {
+      background-color: #dc3545;
+      color: white;
+    }
+  }
+
+  &.btn-secondary {
+    background-color: #a877c8;
+    color: white;
+
+    &:hover {
+      background-color: #a2da5b;
+      color: #a877c8;
+    }
+  }
+}
+
+.editForm {
+  border: 1px solid #a877c8;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 2px solid #a2da5b;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+tbody td {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+thead th {
+  border: none;
+}
+
+thead {
+  background-color: black;
+  color: white;
+}
+
+tbody {
+  background-color: #1f1f1f;
+  color: white;
+}
+
+tbody:hover td {
+  color: white;
+}
+
+.botonn {
+  background-color: #a877c8;
+}
+
+.botonn:hover {
+  background-color: #a2da5b;
+}
+
+.botonn * {
+  color: #a2da5b;
+  font-weight: bold;
+}
+
+.botonn:hover * {
+  color: #a877c8;
+}

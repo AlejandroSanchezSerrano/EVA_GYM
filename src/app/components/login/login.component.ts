@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2'; 
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   standalone: true,
@@ -20,7 +21,7 @@ export class LoginComponent {
 
   errorMessage = '';
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router, private authService: AuthService ) {}
 
   onSubmit(): void {
     this.userService.login(this.credentials).subscribe(
@@ -37,6 +38,7 @@ export class LoginComponent {
           confirmButtonText: 'Continuar'
         }).then(() => {
           // Redirigir después de cerrar el Swal
+          this.authService.login(response.name);
           this.router.navigate(['/perfil']);
         });
       },

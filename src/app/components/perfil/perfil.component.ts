@@ -5,6 +5,7 @@ import { StorageService } from '../../services/storage.service';
 import { User } from '../../interfaces/user';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-perfil',
@@ -29,7 +30,8 @@ export class PerfilComponent implements OnInit {
   constructor(
     private userService: UserService,
     private storageService: StorageService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -118,6 +120,7 @@ export class PerfilComponent implements OnInit {
   }
 
   cerrarSesion(): void {
+    this.authService.logout();
     localStorage.clear();
     Swal.fire({
       title: '¡Sesión cerrada!',

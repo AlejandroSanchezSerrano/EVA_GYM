@@ -11,6 +11,7 @@ import { WeightComponent } from './components/weight/weight.component';
 import { CalorieComponent } from './components/calorie/calorie.component';
 import { TrainingComponent } from './components/training/training.component';
 import { HistoryComponent } from './components/history/history.component';
+import { AdminComponent } from './components/admin/admin.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/inicio', pathMatch: 'full' },
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'calorias', component: CalorieComponent },
   { path: 'ejercicios', component: TrainingComponent },
   { path: 'history', component: HistoryComponent },
+  { path: 'admin', component: AdminComponent },
   { path: '**', component: Error404Component }
 ];
 

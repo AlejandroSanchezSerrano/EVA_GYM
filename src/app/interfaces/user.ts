@@ -8,5 +8,5 @@ export interface User {
     activity_level: string;
     goal: string;
     daily_calories: number;
-    passwd: string;
+    passwd?: string;
   }

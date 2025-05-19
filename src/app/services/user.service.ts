@@ -67,4 +67,13 @@ export class UserService {
       ...user,
     });
   }
+
+  getAllUsers(): Observable<any[]> {
+    return this.http.post<any[]>(
+      `${this.apiUrl}/controller/user_controller.php`,
+      {
+        action: 'getAllUsers',
+      }
+    );
+  }
 }
