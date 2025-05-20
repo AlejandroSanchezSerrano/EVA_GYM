@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import {
   Exercise,
   SeriesDetail,
@@ -19,7 +20,21 @@ Chart.register(...registerables);
   styleUrls: ['./training.component.css'],
   imports: [CommonModule, FormsModule],
 })
-export class TrainingComponent implements OnInit {
+export class TrainingComponent implements OnInit, AfterViewChecked {
+  @ViewChild('exerciseChartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
+  private chartInitialized = false;
+
+  ngAfterViewChecked(): void {
+    if (
+      this.selectedExerciseId &&
+      this.exerciseLogs.length &&
+      !this.chartInitialized
+    ) {
+      this.updateExerciseChart();
+      this.chartInitialized = true;
+    }
+  }
+
   isLoggedIn: boolean = false;
   userId!: number;
 
@@ -94,7 +109,7 @@ export class TrainingComponent implements OnInit {
   }
 
   selectExercise(): void {
-    const groups = Array.from(new Set(this.exercises.map(e => e.group)));
+    const groups = Array.from(new Set(this.exercises.map((e) => e.group)));
 
     Swal.fire({
       title: 'Selecciona un grupo muscular',
@@ -109,7 +124,9 @@ export class TrainingComponent implements OnInit {
     }).then((groupResult) => {
       if (groupResult.isConfirmed && groupResult.value) {
         const selectedGroup = groupResult.value;
-        const filteredExercises = this.exercises.filter(e => e.group === selectedGroup);
+        const filteredExercises = this.exercises.filter(
+          (e) => e.group === selectedGroup
+        );
 
         const exerciseOptions: Record<string, string> = {};
         filteredExercises.forEach((e) => {
@@ -139,8 +156,14 @@ export class TrainingComponent implements OnInit {
   loadExerciseLogs(exerciseId: number): void {
     this.trainingService.getExerciseLogs(this.userId, exerciseId).subscribe({
       next: (data) => {
-        this.exerciseLogs = data.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-        this.updateExerciseChart();
+        this.exerciseLogs = data.sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+        );
+
+        // Esperar un ciclo del DOM para que el *ngIf renderice el canvas
+        setTimeout(() => {
+          this.updateExerciseChart();
+        }, 0);
       },
       error: () => {
         Swal.fire({
@@ -149,7 +172,9 @@ export class TrainingComponent implements OnInit {
           text: 'No se pudo cargar el historial de este ejercicio.',
         });
         this.exerciseLogs = [];
-        this.updateExerciseChart();
+        setTimeout(() => {
+          this.updateExerciseChart();
+        }, 0);
       },
     });
   }
@@ -158,7 +183,9 @@ export class TrainingComponent implements OnInit {
     const today = new Date().toISOString().split('T')[0];
     this.trainingService.getTodayLogs(this.userId, today).subscribe({
       next: (data) => {
-        this.exerciseLogs = data.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        this.exerciseLogs = data.sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+        );
         this.updateExerciseChart();
       },
       error: () => {
@@ -174,72 +201,74 @@ export class TrainingComponent implements OnInit {
   }
 
   updateExerciseChart(): void {
-    if (this.chart) {
-      this.chart.destroy();
-    }
-
-    if (!this.exerciseLogs.length) return;
-
-    const labels: string[] = [];
-    const weights: number[] = [];
-    const repetitions: number[] = [];
-
-    this.exerciseLogs.forEach(log => {
-      log.series.forEach((serie, i) => {
-        const fecha = new Date(log.date).toLocaleDateString();
-        labels.push(`${fecha}`);  
-        weights.push(serie.weight);
-        repetitions.push(serie.repetitions);
-      });
-    });
-
-    const ctx = document.getElementById('exerciseChart') as HTMLCanvasElement;
-    if (!ctx) return;
-
-    this.chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'Peso (kg)',
-            data: weights,
-            borderColor: 'rgba(135, 242, 87, 1)',
-            backgroundColor: 'rgba(135, 242, 87, 0.2)',
-            tension: 0.3,
-            fill: false
-          },
-          {
-            label: 'Repeticiones',
-            data: repetitions,
-            borderColor: 'rgba(132, 69, 190, 1)',
-            backgroundColor: 'rgba(132, 69, 190, 0.2)',
-            tension: 0.3,
-            fill: false
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: 'Fecha'
-            }
-          },
-          y: {
-            title: {
-              display: true,
-              text: 'Valor'
-            },
-            beginAtZero: true
-          }
-        }
-      }
-    });
+  if (this.chart) {
+    this.chart.destroy();
+    this.chart = null;
   }
+
+  if (!this.exerciseLogs.length || !this.chartCanvas) return;
+
+  const canvas = this.chartCanvas.nativeElement;
+  if (!canvas) return;
+
+  const labels: string[] = [];
+  const weights: number[] = [];
+  const repetitions: number[] = [];
+
+  this.exerciseLogs.forEach((log) => {
+    log.series.forEach((serie) => {
+      const fecha = new Date(log.date).toLocaleDateString();
+      labels.push(fecha);
+      weights.push(serie.weight);
+      repetitions.push(serie.repetitions);
+    });
+  });
+
+  this.chart = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Peso (kg)',
+          data: weights,
+          borderColor: 'rgba(135, 242, 87, 1)',
+          backgroundColor: 'rgba(135, 242, 87, 0.2)',
+          tension: 0.3,
+          fill: false,
+        },
+        {
+          label: 'Repeticiones',
+          data: repetitions,
+          borderColor: 'rgba(132, 69, 190, 1)',
+          backgroundColor: 'rgba(132, 69, 190, 0.2)',
+          tension: 0.3,
+          fill: false,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Fecha',
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Valor',
+          },
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+}
+
 
   submitTraining(): void {
     if (!this.selectedExerciseId || !this.seriesInputs.length) return;
@@ -258,12 +287,20 @@ export class TrainingComponent implements OnInit {
             .createSeriesDetails(this.editingLogId!, cleanedSeries)
             .subscribe({
               next: () => {
-                Swal.fire('Actualizado', 'Entrenamiento editado con éxito.', 'success');
+                Swal.fire(
+                  'Actualizado',
+                  'Entrenamiento editado con éxito.',
+                  'success'
+                );
                 this.resetForm();
                 this.loadExerciseLogs(this.selectedExerciseId!);
               },
               error: () => {
-                Swal.fire('Error', 'No se pudieron actualizar las series.', 'error');
+                Swal.fire(
+                  'Error',
+                  'No se pudieron actualizar las series.',
+                  'error'
+                );
               },
               complete: () => (this.loading = false),
             });
@@ -283,12 +320,20 @@ export class TrainingComponent implements OnInit {
               .createSeriesDetails(res.exercise_log_id, cleanedSeries)
               .subscribe({
                 next: () => {
-                  Swal.fire('¡Éxito!', 'Entrenamiento registrado con éxito.', 'success');
+                  Swal.fire(
+                    '¡Éxito!',
+                    'Entrenamiento registrado con éxito.',
+                    'success'
+                  );
                   this.resetForm();
                   this.loadTodayLogs();
                 },
                 error: () => {
-                  Swal.fire('Error', 'No se pudieron guardar las series.', 'error');
+                  Swal.fire(
+                    'Error',
+                    'No se pudieron guardar las series.',
+                    'error'
+                  );
                   this.loading = false;
                 },
                 complete: () => (this.loading = false),
@@ -329,14 +374,22 @@ export class TrainingComponent implements OnInit {
         this.trainingService.deleteExerciseLog(logId).subscribe({
           next: (res) => {
             if (res.success) {
-              Swal.fire('Eliminado', 'El entrenamiento ha sido eliminado.', 'success');
+              Swal.fire(
+                'Eliminado',
+                'El entrenamiento ha sido eliminado.',
+                'success'
+              );
               if (this.selectedExerciseId) {
                 this.loadExerciseLogs(this.selectedExerciseId);
               } else {
                 this.loadTodayLogs();
               }
             } else {
-              Swal.fire('Error', res.message || 'No se pudo eliminar.', 'error');
+              Swal.fire(
+                'Error',
+                res.message || 'No se pudo eliminar.',
+                'error'
+              );
             }
           },
           error: () => {

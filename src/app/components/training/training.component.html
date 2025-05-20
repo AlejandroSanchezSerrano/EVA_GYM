@@ -80,7 +80,8 @@
       style="height: 300px"
       *ngIf="selectedExerciseId && exerciseLogs.length"
     >
-      <canvas id="exerciseChart"></canvas>
+      <!-- <canvas id="exerciseChart"></canvas> -->
+      <canvas #exerciseChartCanvas></canvas>
     </div>
 
     <!-- Historial de logs (de hoy o del ejercicio seleccionado) -->

@@ -67,6 +67,16 @@ button.btn {
     }
   }
 
+  &.btn-outline-success {
+    border-color: #a2da5b;;
+    color: #a2da5b;
+
+    &:hover {
+      background-color: #a2da5b;
+      color: white;
+    }
+  }
+
   &.btn-outline-primary {
     border-color: #a877c8;
     color: #a877c8;
