@@ -18,13 +18,13 @@
           <li class="nav-item">
             <a class="nav-link" [routerLinkActive]="['active']" routerLink="/inicio">Inicio</a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="registrado" class="nav-item">
             <a class="nav-link" [routerLinkActive]="['active']" routerLink="/peso">Mis Pesos</a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="registrado" class="nav-item">
             <a class="nav-link" [routerLinkActive]="['active']" routerLink="/calorias">Mis Calorias</a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="registrado" class="nav-item">
             <a class="nav-link" [routerLinkActive]="['active']" routerLink="/ejercicios">Mis Ejercicios</a>
         </li>
         <li class="nav-item">

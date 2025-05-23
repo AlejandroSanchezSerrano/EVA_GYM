@@ -11,16 +11,23 @@ export class AppComponent implements OnInit {
   title = 'EVA GYM';
   correo = 'alexxsanse@gmail.com';
   isAdmin: boolean = false;
+  registrado: boolean = false;
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
+    // Suscripción al estado de admin
     this.authService.isAdmin$.subscribe(isAdmin => {
       this.isAdmin = isAdmin;
+    });
+
+    // Suscripción al estado de sesión
+    this.authService.isLogged$.subscribe(isLogged => {
+      this.registrado = isLogged;
     });
   }
 
   getPerfilLink(): string {
-    return localStorage.getItem('user_name') ? '/perfil' : '/login';
+    return this.registrado ? '/perfil' : '/login';
   }
 }
