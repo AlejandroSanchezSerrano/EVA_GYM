@@ -76,4 +76,18 @@ export class UserService {
       }
     );
   }
+
+  getUsersPaged(
+    page: number,
+    limit: number
+  ): Observable<{ users: User[]; total: number }> {
+    return this.http.post<{ users: User[]; total: number }>(
+      `${this.apiUrl}/controller/user_controller.php`,
+      {
+        action: 'getAllUsers',
+        page: page,
+        limit: limit,
+      }
+    );
+  }
 }

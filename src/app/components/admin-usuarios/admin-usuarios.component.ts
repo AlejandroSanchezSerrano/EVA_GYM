@@ -9,7 +9,7 @@ import { User } from '../../interfaces/user';
   selector: 'app-admin-usuarios',
   templateUrl: './admin-usuarios.component.html',
   styleUrls: ['./admin-usuarios.component.css'],
-  imports: [FormsModule, CommonModule]
+  imports: [FormsModule, CommonModule],
 })
 export class AdminUsuariosComponent implements OnInit {
   users: User[] = [];
@@ -21,8 +21,30 @@ export class AdminUsuariosComponent implements OnInit {
     this.loadUsers();
   }
 
+  currentPage: number = 1;
+  pageSize: number = 8;
+  totalUsers: number = 0;
+
   loadUsers(): void {
-    this.userService.getAllUsers().subscribe(users => this.users = users);
+    this.userService
+      .getUsersPaged(this.currentPage, this.pageSize)
+      .subscribe((data) => {
+        this.users = data.users;
+        this.totalUsers = data.total;
+      });
+  }
+
+  changePage(delta: number): void {
+    const newPage = this.currentPage + delta;
+    const totalPages = Math.ceil(this.totalUsers / this.pageSize);
+    if (newPage >= 1 && newPage <= totalPages) {
+      this.currentPage = newPage;
+      this.loadUsers();
+    }
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.totalUsers / this.pageSize);
   }
 
   editUser(user: User): void {
