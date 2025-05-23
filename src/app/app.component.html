@@ -17,25 +17,31 @@
         <ul class="navbar-nav text-center">
           <li class="nav-item">
             <a class="nav-link" [routerLinkActive]="['active']" routerLink="/inicio">Inicio</a>
-        </li>
-        <li *ngIf="registrado" class="nav-item">
-            <a class="nav-link" [routerLinkActive]="['active']" routerLink="/peso">Mis Pesos</a>
-        </li>
-        <li *ngIf="registrado" class="nav-item">
-            <a class="nav-link" [routerLinkActive]="['active']" routerLink="/calorias">Mis Calorias</a>
-        </li>
-        <li *ngIf="registrado" class="nav-item">
-            <a class="nav-link" [routerLinkActive]="['active']" routerLink="/ejercicios">Mis Ejercicios</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" [routerLinkActive]="['active']" routerLink="/perfil">Perfil</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLinkActive]="['active']" routerLink="/acerca">Acerca De</a>
-        </li> 
-        <li *ngIf="isAdmin" class="nav-item">
-          <a class="nav-link" [routerLinkActive]="['active']" routerLink="/admin">Admin</a>
-        </li>         
+          </li>
+          <li *ngIf="registrado" class="nav-item">
+              <a class="nav-link" [routerLinkActive]="['active']" routerLink="/peso">Mis Pesos</a>
+          </li>
+          <li *ngIf="registrado" class="nav-item">
+              <a class="nav-link" [routerLinkActive]="['active']" routerLink="/calorias">Mis Calorias</a>
+          </li>
+          <li *ngIf="registrado" class="nav-item">
+              <a class="nav-link" [routerLinkActive]="['active']" routerLink="/ejercicios">Mis Ejercicios</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" [routerLinkActive]="['active']" routerLink="/perfil">Perfil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLinkActive]="['active']" routerLink="/acerca">Acerca De</a>
+          </li> 
+          <li *ngIf="isAdmin" class="nav-item dropdown" (mouseenter)="showDropdown = true" (mouseleave)="showDropdown = false">
+            <a class="nav-link dropdown-toggle" href="#" role="button">
+              Admin
+            </a>
+            <ul class="bg-dark dropdown-menu show" *ngIf="showDropdown">
+              <li><a class="dropdown-item nav-link" [routerLink]="['/ad_usuarios']" routerLinkActive="active">Usuarios</a></li>
+              <li><a class="dropdown-item nav-link" [routerLink]="['/ad_ejercicios']" routerLinkActive="active">Ejercicios</a></li>
+            </ul>
+          </li>
         </ul>
       </div>
     </div>

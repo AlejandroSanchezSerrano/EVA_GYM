@@ -15,6 +15,8 @@ export class AppComponent implements OnInit {
 
   constructor(private authService: AuthService) {}
 
+  showDropdown = false;
+
   ngOnInit(): void {
     // Suscripción al estado de admin
     this.authService.isAdmin$.subscribe(isAdmin => {

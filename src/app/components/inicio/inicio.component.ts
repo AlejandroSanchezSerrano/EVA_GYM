@@ -21,7 +21,19 @@ export class InicioComponent implements OnInit {
     this.isUserLoggedIn = this.user_name !== null; 
   }
 
-  irAAcercaDe() {
+  irPesos() {
+    this.router.navigate(['/peso']);
+  }
+
+  irCalorias() {
+    this.router.navigate(['/calorias']);
+  }
+
+  irEjercicios() {
+    this.router.navigate(['/ejercicios']);
+  }
+
+  irAbout() {
     this.router.navigate(['/acerca']);
   }
 
