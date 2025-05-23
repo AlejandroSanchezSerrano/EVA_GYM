@@ -1,0 +1,48 @@
+<div class="container bg-dark-opacity text-white text-center py-4">
+  <h2 class="mb-3">Administración de Ejercicios</h2>
+  <button class="btn btn-outline-success btn-sm mb-3" (click)="addExercise()">Añadir nuevo</button>
+
+  <div *ngIf="exercises.length > 0; else noExercises">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Grupo Muscular</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ex of exercises">
+            <td>
+              <ng-container *ngIf="editingExercise?.id === ex.id; else showName">
+                <input [(ngModel)]="editingExercise!.name" class="form-control form-control-sm" />
+              </ng-container>
+              <ng-template #showName>{{ ex.name }}</ng-template>
+            </td>
+            <td>
+              <ng-container *ngIf="editingExercise?.id === ex.id; else showGroup">
+                <input [(ngModel)]="editingExercise!.group" class="form-control form-control-sm" />
+              </ng-container>
+              <ng-template #showGroup>{{ ex.group }}</ng-template>
+            </td>
+            <td>
+              <ng-container *ngIf="editingExercise?.id === ex.id; else actionButtons">
+                <button class="btn btn-sm btn-outline-success me-1" (click)="saveExercise()">Guardar</button>
+                <button class="btn btn-sm btn-outline-secondary" (click)="editingExercise = null">Cancelar</button>
+              </ng-container>
+              <ng-template #actionButtons>
+                <button class="btn btn-sm btn-outline-primary me-1" (click)="startEditExercise(ex)">Editar</button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteExercise(ex.id)">Eliminar</button>
+              </ng-template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <ng-template #noExercises>
+    <p class="text-muted">No hay ejercicios registrados.</p>
+  </ng-template>
+</div>

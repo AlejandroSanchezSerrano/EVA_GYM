@@ -12,6 +12,8 @@ import { CalorieComponent } from './components/calorie/calorie.component';
 import { TrainingComponent } from './components/training/training.component';
 import { HistoryComponent } from './components/history/history.component';
 import { AdminComponent } from './components/admin/admin.component';
+import { AdminUsuariosComponent } from './components/admin-usuarios/admin-usuarios.component';
+import { AdminEjerciciosComponent } from './components/admin-ejercicios/admin-ejercicios.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/inicio', pathMatch: 'full' },
@@ -26,6 +28,8 @@ const routes: Routes = [
   { path: 'ejercicios', component: TrainingComponent },
   { path: 'history', component: HistoryComponent },
   { path: 'admin', component: AdminComponent },
+  { path: 'ad_usuarios', component: AdminUsuariosComponent },
+  { path: 'ad_ejercicios', component: AdminEjerciciosComponent },
   { path: '**', component: Error404Component }
 ];
 

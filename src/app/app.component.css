@@ -37,3 +37,8 @@ a:visited {
 .dropdown-item:hover {
   background-color: black;
 }
+
+.dropdown-item.active {
+    background-color: black;
+
+}
