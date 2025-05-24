@@ -10,7 +10,8 @@ export interface Exercise {
 
 @Injectable({ providedIn: 'root' })
 export class ExerciseService {
-  private apiUrl = 'https://ruizgijon.ddns.net/sancheza/evagym/controller/exercise_controller.php';
+  private apiUrl =
+    'https://ruizgijon.ddns.net/sancheza/evagym/controller/exercise_controller.php';
 
   constructor(private http: HttpClient) {}
 
@@ -25,11 +26,25 @@ export class ExerciseService {
   update(exercise: Exercise): Observable<any> {
     return this.http.post(this.apiUrl, {
       action: 'update',
-      ...exercise
+      ...exercise,
     });
   }
 
   delete(id: number): Observable<any> {
     return this.http.post(this.apiUrl, { action: 'delete', id });
+  }
+
+  getPagedExercises(
+    page: number,
+    limit: number
+  ): Observable<{ exercises: Exercise[]; total: number }> {
+    return this.http.post<{ exercises: Exercise[]; total: number }>(
+      this.apiUrl,
+      {
+        action: 'getPaged',
+        page: page,
+        limit: limit,
+      }
+    );
   }
 }

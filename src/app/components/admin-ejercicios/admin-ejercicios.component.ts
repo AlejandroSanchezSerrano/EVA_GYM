@@ -17,16 +17,15 @@ export class AdminEjerciciosComponent implements OnInit {
   editingExercise: Exercise | null = null;
   isAdmin: boolean = false;
 
-  constructor(private exerciseService: ExerciseService, private router: Router) {}
+  constructor(
+    private exerciseService: ExerciseService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     const nombreUser = localStorage.getItem('user_name');
     this.isAdmin = nombreUser === 'admin';
     this.loadExercises();
-  }
-
-  loadExercises(): void {
-    this.exerciseService.getAll().subscribe((exs) => (this.exercises = exs));
   }
 
   startEditExercise(ex: Exercise): void {
@@ -49,8 +48,8 @@ export class AdminEjerciciosComponent implements OnInit {
   }
 
   irAInicio(): void {
-      this.router.navigate(['/inicio']);
-    }
+    this.router.navigate(['/inicio']);
+  }
 
   addExercise(): void {
     Swal.fire({
@@ -81,5 +80,31 @@ export class AdminEjerciciosComponent implements OnInit {
           });
       }
     });
+  }
+
+  currentPage: number = 1;
+  pageSize: number = 7;
+  totalExercises: number = 0;
+
+  loadExercises(): void {
+    this.exerciseService
+      .getPagedExercises(this.currentPage, this.pageSize)
+      .subscribe((data) => {
+        this.exercises = data.exercises;
+        this.totalExercises = data.total;
+      });
+  }
+
+  changePage(delta: number): void {
+    const newPage = this.currentPage + delta;
+    const totalPages = Math.ceil(this.totalExercises / this.pageSize);
+    if (newPage >= 1 && newPage <= totalPages) {
+      this.currentPage = newPage;
+      this.loadExercises();
+    }
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.totalExercises / this.pageSize);
   }
 }

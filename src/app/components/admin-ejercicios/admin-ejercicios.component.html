@@ -1,6 +1,6 @@
 <div *ngIf="isAdmin" class="container bg-dark-opacity text-white text-center py-4">
   <div class="container bg-dark-opacity text-white text-center py-4">
-  <h2 class="mb-3">Administración de Ejercicios</h2>
+  <h1 class="mb-3">Administración de Ejercicios</h1>
   <button class="btn btn-outline-success btn-sm mb-3" (click)="addExercise()">Añadir nuevo</button>
 
   <div *ngIf="exercises.length > 0; else noExercises">
@@ -40,6 +40,24 @@
           </tr>
         </tbody>
       </table>
+      <div class="mt-3 d-flex justify-content-center gap-3" *ngIf="totalExercises > pageSize">
+        <button
+          class="btn btn-outline-light btn-sm"
+          (click)="changePage(-1)"
+          [disabled]="currentPage === 1"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <span>Página {{ currentPage }} de {{ totalPages }}</span>
+        <button
+          class="btn btn-outline-light btn-sm"
+          (click)="changePage(1)"
+          [disabled]="currentPage * pageSize >= totalExercises"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+
     </div>
   </div>
 
