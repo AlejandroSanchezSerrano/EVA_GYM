@@ -34,7 +34,7 @@
             <a class="nav-link" [routerLinkActive]="['active']" routerLink="/acerca">Acerca De</a>
           </li> 
           <li *ngIf="isAdmin" [routerLinkActive]="['active']" class="nav-item dropdown" (mouseenter)="showDropdown = true" (mouseleave)="showDropdown = false">
-            <a class="nav-link dropdown-toggle" [routerLink]="['/admin']" role="button">
+            <a class="nav-link dropdown-toggle" role="button">
               Admin
             </a>
             <ul class="bg-dark dropdown-menu show" *ngIf="showDropdown">

@@ -27,7 +27,7 @@ const routes: Routes = [
   { path: 'calorias', component: CalorieComponent },
   { path: 'ejercicios', component: TrainingComponent },
   { path: 'history', component: HistoryComponent },
-  { path: 'admin', component: AdminComponent },
+  // { path: 'admin', component: AdminComponent },
   { path: 'ad_usuarios', component: AdminUsuariosComponent },
   { path: 'ad_ejercicios', component: AdminEjerciciosComponent },
   { path: '**', component: Error404Component }
