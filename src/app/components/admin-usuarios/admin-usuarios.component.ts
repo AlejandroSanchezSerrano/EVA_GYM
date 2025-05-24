@@ -1,58 +1,64 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { User } from '../../interfaces/user';
 import { Router } from '@angular/router';
+import { DataTablesModule } from 'angular-datatables';
+import { Subject } from 'rxjs';
 
 @Component({
   standalone: true,
   selector: 'app-admin-usuarios',
   templateUrl: './admin-usuarios.component.html',
   styleUrls: ['./admin-usuarios.component.css'],
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, DataTablesModule],
 })
-export class AdminUsuariosComponent implements OnInit {
+export class AdminUsuariosComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   users: User[] = [];
   selectedUser: User | null = null;
   isAdmin: boolean = false;
+
+  dtOptions: any = {};
+  dtTrigger: Subject<any> = new Subject<any>();
 
   constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit(): void {
     const nombreUser = localStorage.getItem('user_name');
     this.isAdmin = nombreUser === 'admin';
+
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 6,
+      lengthChange: false,
+      language: {
+        url: '/es-ES.json',
+      },
+    };
+
     this.loadUsers();
   }
 
-  currentPage: number = 1;
-  pageSize: number = 8;
-  totalUsers: number = 0;
+  ngAfterViewInit(): void {
+    this.dtTrigger.next(null);
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
+  }
 
   irAInicio(): void {
     this.router.navigate(['/inicio']);
   }
 
   loadUsers(): void {
-    this.userService
-      .getUsersPaged(this.currentPage, this.pageSize)
-      .subscribe((data) => {
-        this.users = data.users;
-        this.totalUsers = data.total;
-      });
-  }
-
-  changePage(delta: number): void {
-    const newPage = this.currentPage + delta;
-    const totalPages = Math.ceil(this.totalUsers / this.pageSize);
-    if (newPage >= 1 && newPage <= totalPages) {
-      this.currentPage = newPage;
-      this.loadUsers();
-    }
-  }
-
-  get totalPages(): number {
-    return Math.ceil(this.totalUsers / this.pageSize);
+    this.userService.getAllUsers().subscribe((data) => {
+      this.users = data;
+      this.dtTrigger.next(null); // Inicializa DataTable
+    });
   }
 
   editUser(user: User): void {
@@ -63,7 +69,7 @@ export class AdminUsuariosComponent implements OnInit {
     if (this.selectedUser) {
       this.userService.updateUser(this.selectedUser).subscribe(() => {
         this.selectedUser = null;
-        this.loadUsers();
+        location.reload(); // Reinicia DataTable correctamente
       });
     }
   }
@@ -74,7 +80,7 @@ export class AdminUsuariosComponent implements OnInit {
 
   deleteUser(id: number): void {
     if (confirm('¿Estás seguro de eliminar este usuario?')) {
-      this.userService.deleteUser(id).subscribe(() => this.loadUsers());
+      this.userService.deleteUser(id).subscribe(() => location.reload());
     }
   }
 }

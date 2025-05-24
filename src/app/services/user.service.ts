@@ -68,12 +68,10 @@ export class UserService {
     });
   }
 
-  getAllUsers(): Observable<any[]> {
-    return this.http.post<any[]>(
+  getAllUsers(): Observable<User[]> {
+    return this.http.post<User[]>(
       `${this.apiUrl}/controller/user_controller.php`,
-      {
-        action: 'getAllUsers',
-      }
+      { action: 'getAllRawUsers' }
     );
   }
 
