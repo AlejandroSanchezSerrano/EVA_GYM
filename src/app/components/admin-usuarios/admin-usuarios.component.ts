@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { User } from '../../interfaces/user';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -14,16 +15,23 @@ import { User } from '../../interfaces/user';
 export class AdminUsuariosComponent implements OnInit {
   users: User[] = [];
   selectedUser: User | null = null;
+  isAdmin: boolean = false;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit(): void {
+    const nombreUser = localStorage.getItem('user_name');
+    this.isAdmin = nombreUser === 'admin';
     this.loadUsers();
   }
 
   currentPage: number = 1;
   pageSize: number = 8;
   totalUsers: number = 0;
+
+  irAInicio(): void {
+    this.router.navigate(['/inicio']);
+  }
 
   loadUsers(): void {
     this.userService

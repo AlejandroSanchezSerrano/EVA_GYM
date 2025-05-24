@@ -1,4 +1,5 @@
-<div class="container bg-dark-opacity text-white text-center py-4">
+<div *ngIf="isAdmin" class="container bg-dark-opacity text-white text-center py-4">
+  <div class="container bg-dark-opacity text-white text-center py-4">
   <h1 class="mb-4">Administración de Usuarios</h1>
 
   <div *ngIf="users.length > 0; else noUsers">
@@ -189,5 +190,18 @@
         </div>
       </form>
     </div>
+  </div>
+</div>
+
+</div>
+
+<!-- Mensaje para usuarios no administradores -->
+<div *ngIf="!isAdmin" class="text-center text-white">
+  <div class="container py-5 text-center text-white">
+    <h1 class="mb-2">Acceso Denegado</h1>
+    <p class="text-muted">No tienes acceso a esta pagina, contacta con el administrador</p>
+    <button (click)="irAInicio()" class="btn botonn mt-5">
+      <label style="cursor: pointer">Volver al inicio</label>
+    </button>
   </div>
 </div>
