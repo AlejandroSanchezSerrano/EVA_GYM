@@ -12,16 +12,21 @@ import { Router } from '@angular/router';
 })
 export class AcercaComponent implements OnInit {
   commits: any[] = [];
+  mostrarSidebar: boolean = false;
 
-  constructor(private githubService: GithubService, private router: Router) { }
+  constructor(private githubService: GithubService, private router: Router) {}
 
   ngOnInit() {
     this.githubService.getCommits().subscribe(data => {
-      this.commits = data.slice(0,15); // Mostrar los últimos 5 commits
+      this.commits = data.slice(0, 15);
     });
   }
 
   irAInicio() {
     this.router.navigate(['/inicio']);
+  }
+
+  toggleSidebar() {
+    this.mostrarSidebar = !this.mostrarSidebar;
   }
 }

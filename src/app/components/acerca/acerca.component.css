@@ -31,3 +31,6 @@ a:hover {
   transform: scale(1.04);
 }
 
+button {
+  z-index: 9999 !important;
+}
