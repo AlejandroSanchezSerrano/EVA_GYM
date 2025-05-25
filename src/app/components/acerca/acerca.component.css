@@ -49,3 +49,9 @@ button {
     width: 100%;
   }
 }
+
+@media (max-width: 768px) {
+  .ocultar {
+    display: none;
+  }
+}

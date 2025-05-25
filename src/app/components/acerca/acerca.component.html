@@ -97,7 +97,7 @@
       <!-- Botón para cerrar el sidebar -->
       <button
         (click)="toggleSidebar()"
-        class="btn btn-sm btn-light position-absolute top-0 end-0 m-2"
+        class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 ocultar"
         style="width: 30px; height: 30px"
       >
         <i class="bi bi-chevron-right"></i>
@@ -125,7 +125,7 @@
     <button
       *ngIf="!mostrarSidebar"
       (click)="toggleSidebar()"
-      class="btn btn-sm position-fixed z-3"
+      class="btn btn-sm position-fixed z-3 ocultar"
       style="top: 172px; right: 7px; width: 30px; height: 30px"
     >
       <i class="bi bi-chevron-left"></i>
