@@ -34,3 +34,18 @@ a:hover {
 button {
   z-index: 9999 !important;
 }
+
+.contenido-principal {
+  transition: width 0.5s ease;
+}
+
+/* Cuando el sidebar está visible (col-md-8 = 66.66% en pantallas grandes) */
+@media (min-width: 768px) {
+  .contenido-principal.con-sidebar {
+    width: 66.66666667%;
+  }
+
+  .contenido-principal.sin-sidebar {
+    width: 100%;
+  }
+}

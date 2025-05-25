@@ -2,7 +2,10 @@
   <div class="row flex-md-row flex-column" style="min-height: 100vh">
     <!-- Contenido principal primero en móviles -->
     <div
-      [ngClass]="mostrarSidebar ? 'col-md-8' : 'col-12'"
+      [ngClass]="[
+        'contenido-principal',
+        mostrarSidebar ? 'con-sidebar' : 'sin-sidebar'
+      ]"
       class="d-flex justify-content-center p-4 order-1 order-md-1"
     >
       <div class="w-100">
