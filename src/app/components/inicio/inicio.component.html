@@ -17,7 +17,7 @@
     <p>Haz seguimiento diario de tu evolución física y controla tu progreso con precisión.</p>
     <div>
       <button class="btn btn-secondary m-1" (click)="irPesos()">Ir ahora</button>
-      <button class="btn btn-secondary m-1">Tutorial</button>
+      <button class="btn btn-secondary m-1" (click)="mostrarTutorial('pesos')">Tutorial</button>
     </div>
   </div>
 
@@ -26,7 +26,7 @@
     <p>Anota tus comidas y conoce el impacto nutricional para alcanzar tus objetivos.</p>
     <div>
       <button class="btn btn-primary m-1" (click)="irCalorias()">Ir ahora</button>
-      <button class="btn btn-primary m-1">Tutorial</button>
+      <button class="btn btn-primary m-1" (click)="mostrarTutorial('calorias')">Tutorial</button>
     </div>
   </div>
 
@@ -35,7 +35,7 @@
     <p>Planifica tus rutinas, registra tus entrenamientos y mejora cada semana.</p>
     <div>
       <button class="btn btn-primary m-1" (click)="irEjercicios()">Ir ahora</button>
-      <button class="btn btn-primary m-1">Tutorial</button>
+      <button class="btn btn-primary m-1" (click)="mostrarTutorial('ejercicios')">Tutorial</button>
     </div>
   </div>
 
@@ -44,7 +44,7 @@
     <p>Conoce quiénes somos y cómo podemos ayudarte a transformar tu estilo de vida.</p>
     <div>
       <button class="btn btn-secondary m-1" (click)="irAbout()">Ir ahora</button>
-      <button class="btn btn-secondary m-1">Tutorial</button>
+      <!-- <button class="btn btn-secondary m-1">Tutorial</button> -->
     </div>
   </div>
 </section>
