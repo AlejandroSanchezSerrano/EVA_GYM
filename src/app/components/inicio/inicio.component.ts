@@ -46,23 +46,33 @@ export class InicioComponent implements OnInit {
   mostrarTutorial(tipo: string) {
     const imagenes: { [clave: string]: string[] } = {
       pesos: [
-        'https://via.placeholder.com/400x200?text=Peso+1',
-        'https://via.placeholder.com/400x200?text=Peso+2',
-        'https://via.placeholder.com/400x200?text=Peso+3',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Peso/Peso1.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Peso/Peso2.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Peso/Peso3.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Peso/Peso4.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Peso/Peso5.png',
       ],
       calorias: [
-        'https://via.placeholder.com/400x200?text=Calorias+1',
-        'https://via.placeholder.com/400x200?text=Calorias+2',
-        'https://via.placeholder.com/400x200?text=Calorias+3',
-        'https://via.placeholder.com/400x200?text=Calorias+4',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Caloria/Caloria1.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Caloria/Caloria2.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Caloria/Caloria3.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Caloria/Caloria4.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Caloria/Caloria5.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Caloria/Caloria6.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Caloria/Caloria7.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Caloria/Caloria8.png',
       ],
-      ejercicios: ['https://via.placeholder.com/400x200?text=Ejercicios+1'],
-      about: [
-        'https://via.placeholder.com/400x200?text=Nosotros+1',
-        'https://via.placeholder.com/400x200?text=Nosotros+2',
-        'https://via.placeholder.com/400x200?text=Nosotros+3',
-        'https://via.placeholder.com/400x200?text=Nosotros+4',
-        'https://via.placeholder.com/400x200?text=Nosotros+5',
+      ejercicios: [
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Ejercicio/Ejercicio1.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Ejercicio/Ejercicio2.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Ejercicio/Ejercicio3.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Ejercicio/Ejercicio4.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Ejercicio/Ejercicio5.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Ejercicio/Ejercicio6.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Ejercicio/Ejercicio9.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Ejercicio/Ejercicio7.png',
+        'https://ruizgijon.ddns.net/sancheza/img/EVAGYM/Ejercicio/Ejercicio8.png',
+
       ],
     };
 
