@@ -70,4 +70,4 @@ Este proyecto se publica con fines educativos y personales. Puedes utilizarlo li
 ### 📫 Contacto
 
 Autor: **Alejandro Sánchez Serrano**  
-Email: [alexxsanse@gmail.com]
+Email: alexxsanse@gmail.com
