@@ -1,59 +1,73 @@
-# EVAGYM
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.9.
+# 🏋️ EVA GYM – Aplicación Web de Gestión de Entrenamiento y Nutrición
 
-## Development server
+**EVA GYM** es una plataforma web desarrollada en Angular y PHP que permite a los usuarios llevar un control completo de su actividad física y alimentación diaria. Los usuarios pueden registrar sus entrenamientos, peso, calorías consumidas, visualizar gráficos de progreso e incluso obtener estimaciones calóricas mediante IA.
 
-To start a local development server, run:
+## 🚀 Funcionalidades
 
-```bash
-ng serve
-```
+- Registro e inicio de sesión de usuarios
+- Registro de peso y visualización de evolución en gráficos
+- Control de comidas y estimación de calorías usando inteligencia artificial
+- Gestión de entrenamientos y ejercicios
+- Panel de administración para gestionar usuarios y ejercicios
+- Interfaz responsive y moderna con Bootstrap 5 y SCSS
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🧠 Tecnologías utilizadas
 
-## Code scaffolding
+### Frontend
+- Angular CLI
+- Bootstrap 5
+- CSS3
+- Gráficos (ng2-charts)
+- Figma / Canva (para prototipos y presentación)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Backend
+- PHP (API REST)
+- MySQL
+- Apache (XAMPP / servidor real)
 
-```bash
-ng generate component component-name
-```
+### Otras herramientas
+- Postman (test de API)
+- Visual Studio Code
+- GitHub Actions (despliegue automático del frontend)
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 📦 Instalación
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Clona este repositorio:
 
 ```bash
-ng test
+git clone https://github.com/AlejandroSanchezSerrano/EVA_GYM.git
+cd EVA_GYM
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+Instala las dependencias del frontend:
 
 ```bash
-ng e2e
+npm install
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Backend
+El backend en PHP debe colocarse en un servidor Apache (por ejemplo, XAMPP o un servidor con dominio real). La base de datos está estructurada en MySQL.
 
-## Additional Resources
+Asegúrate de importar el archivo `.sql` de la base de datos incluido en el repositorio (si lo has añadido), y configura correctamente los archivos de conexión en PHP.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 🌐 Despliegue
+
+- **Frontend:** desplegado en GitHub Pages mediante GitHub Actions.
+- **Backend:** alojado en el servidor de RUIX (DDNS), con conexión a MySQL y acceso externo configurado.
+
+## 🛠 Estado del proyecto
+
+✅ Funcional  
+📈 Preparado para mejoras futuras (IA mejorada, reconocimiento de imagen o voz)
+
+## 📃 Licencia
+
+Este proyecto se publica con fines educativos y personales. Puedes utilizarlo libremente dando atribución.
+
+---
+
+### 📫 Contacto
+
+Autor: **Alejandro Sánchez Serrano**  
+Email: [alexxsanse@gmail.com]
